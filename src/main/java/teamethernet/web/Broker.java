@@ -16,18 +16,15 @@ public class Broker implements Runnable {
     @PostConstruct
     @Override
     public void run() {
-        while (true) {
+        //while (true) {
             try {
                 final NoiseData noiseData = generateNoiseData();
-                System.out.println("Look here --> " + noiseDataRepository);
                 noiseDataRepository.save(noiseData);
-
-                System.out.println("Hej");
 
                 Thread.sleep(4000);
             } catch (InterruptedException ex) {
             }
-        }
+        //}
     }
 
     public NoiseData generateNoiseData() {
