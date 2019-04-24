@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.bundle.min.js"></script>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+		<link rel="icon" href="images/icon2.ico"/>
+		
+		<title>Noise sensor monitor</title>
+		<style>
+			footer {
+				border-top: 1px solid #DADADA;
+				height: 64px;
+				line-height: 64px;
+				font-size: 18px;
+				color: #333;
+				padding: 15px 0;
+			}
+			
+			footer .giticon {
+				text-align: right;
+			}
+			
+			footer .fab {
+				font-size: 36px;
+				color: #666;
+			}
+			
+			footer .fab:hover {
+				color: #000;
+			}
+			
+			header {
+				border-bottom: 1px solid #DADADA;
+				padding: 30px 0;
+			}
+			
+			header h1 {
+				margin: 0;
+				padding: 0;
+			}
+			
+			#datepicker {
+				width: 100%;
+				margin-bottom: 15px;
+				height: 38px;
+				padding: 5px;
+				border-radius: 5px;
+				border: 1px solid #C8C8C8;
+			}
+			
+			.columntitle {
+				margin-bottom: 15px;
+			}
+			
+			.form {
+				border-bottom: 1px solid #DADADA;
+				padding: 30px 0;
+				background-color: #FAFAFA;
+			}
+			
+			.graphs {
+				padding: 30px 0 60px 0;
+				min-height: 300px;
+			}
+			
+			.graphs h3 {
+				margin-bottom: 10px;
+			}
+			
+			.graphs canvas {
+				margin-bottom: 30px;
+			}
+			
+			.sensorselectbox {
+				height: 200px;
+				background-color: #FFFFFF;
+				border: 1px solid #DADADA;
+				padding: 12px 15px;
+				border-radius: 5px;
+			}
+			
+			.form-check {
+				margin-bottom: 2px;
+			}
+			
+			.nosensors {
+				display: none;
+				text-align: center;
+				margin-top: 45px;
+				font-size: 24px;
+				color: #999;
+				font-style: italic;
+			}
+			
+			.homebutton {
+				margin-top: 12px;
+				font-weight: 600;
+			}
+			
+			@media (min-width: 768px) {
+				.formcolumn-left {
+					padding-right: 30px;
+				}
+				.formcolumn-right {
+					padding-left: 30px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<header>
+			<div class="container">
+			   <h1 class="float-left">Noise sensor monitor</h1>
+			   <a class="homebutton float-right" href="/" title="Go home">Home</a>
+			   <div class="clearfix"></div>
+			</div>
+		</header>
+		<div class="form">
+		   <div class="container">
+			  <div class="row">
+				 <div class="formcolumn-left col-md-6">
+					<h2 class="columntitle">Set interval</h2>
+					<input type="text" id="datepicker" name="datetimes" />
+					<div class="text-right">
+					   <button type="button" class="btn btn-primary">Submit</button>
+					</div>
+				 </div>
+				 <div class="formcolumn-right col-md-6">
+					<h2 class="columntitle">
+					   Select sensors to show
+					</h2>
+					<div class="sensorselectbox overflow-auto">
+					   <div class="form-check">
+						  <input class="form-check-input" type="checkbox" checked value="1" id="defaultCheck1">
+						  <label class="form-check-label" for="defaultCheck1">
+						  Sensor #1
+						  </label>
+					   </div>
+					   <div class="form-check">
+						  <input class="form-check-input" type="checkbox" checked value="2" id="defaultCheck2">
+						  <label class="form-check-label" for="defaultCheck2">
+						  Sensor #2
+						  </label>
+					   </div>
+					   <div class="form-check">
+						  <input class="form-check-input" type="checkbox" checked value="3" id="defaultCheck3">
+						  <label class="form-check-label" for="defaultCheck3">
+						  Sensor #3
+						  </label>
+					   </div>
+					   <div class="form-check">
+						  <input class="form-check-input" type="checkbox" checked value="4" id="defaultCheck4">
+						  <label class="form-check-label" for="defaultCheck4">
+						  Sensor #4
+						  </label>
+					   </div>
+					   <div class="form-check">
+						  <input class="form-check-input" type="checkbox" checked value="5" id="defaultCheck5">
+						  <label class="form-check-label" for="defaultCheck5">
+						  Sensor #5
+						  </label>
+					   </div>
+					   <div class="form-check">
+						  <input class="form-check-input" type="checkbox" checked value="6" id="defaultCheck6">
+						  <label class="form-check-label" for="defaultCheck6">
+						  Sensor #6
+						  </label>
+					   </div>
+					   <div class="form-check">
+						  <input class="form-check-input" type="checkbox" checked value="7" id="defaultCheck7">
+						  <label class="form-check-label" for="defaultCheck7">
+						  Sensor #7
+						  </label>
+					   </div>
+					   <div class="form-check">
+						  <input class="form-check-input" type="checkbox" checked value="8" id="defaultCheck8">
+						  <label class="form-check-label" for="defaultCheck8">
+						  Sensor #8
+						  </label>
+					   </div>
+					   <div class="form-check">
+						  <input class="form-check-input" type="checkbox" checked value="9" id="defaultCheck9">
+						  <label class="form-check-label" for="defaultCheck9">
+						  Sensor #9
+						  </label>
+					   </div>
+					</div>
+				 </div>
+			  </div>
+		   </div>
+		</div>
+		<div class="graphs">
+		   <div class="container">
+			  <div id="s1">
+				 <h3>
+				 Sensor #1</h2>
+				 <canvas id="canvas1" width="400" height="200"></canvas>
+			  </div>
+			  <div id="s2">
+				 <h3>
+				 Sensor #2</h2>
+				 <canvas id="canvas2" width="400" height="200"></canvas>
+			  </div>
+			  <div id="s3">
+				 <h3>
+				 Sensor #3</h2>
+				 <canvas id="canvas3" width="400" height="200"></canvas>
+			  </div>
+			  <div id="s4">
+				 <h3>
+				 Sensor #4</h2>
+				 <canvas id="canvas4" width="400" height="200"></canvas>
+			  </div>
+			  <div id="s5">
+				 <h3>
+				 Sensor #5</h2>
+				 <canvas id="canvas5" width="400" height="200"></canvas>
+			  </div>
+			  <div id="s6">
+				 <h3>
+				 Sensor #6</h2>
+				 <canvas id="canvas6" width="400" height="200"></canvas>
+			  </div>
+			  <div id="s7">
+				 <h3>
+				 Sensor #7</h2>
+				 <canvas id="canvas7" width="400" height="200"></canvas>
+			  </div>
+			  <div id="s8">
+				 <h3>
+				 Sensor #8</h2>
+				 <canvas id="canvas8" width="400" height="200"></canvas>
+			  </div>
+			  <div id="s9">
+				 <h3>
+				 Sensor #9</h2>
+				 <canvas id="canvas9" width="400" height="200"></canvas>
+			  </div>
+			  <div class="nosensors">No data to show</div>
+		   </div>
+		</div>
+		<footer>
+		   <div class="container">
+			  <div class="row">
+				 <div class="col-sm-10">© Team Ethernet 2019</div>
+				 <div class="col-sm-2 giticon"><a href="https://github.com/team-ethernet" title="Check out our github" target="_blank"><i class="fab fa-github"></i></a></div>
+			  </div>
+		   </div>
+		</footer>
+		<script>
+			var timeFormat = 'DD/MM/YYYY HH:mm:ss';
+			var i;
+
+			for (i = 1; i < 10; i++) {
+
+				var config = {
+					type: 'line',
+					data: {
+						datasets: [{
+							label: "dB",
+							data: [{
+								x: "04/01/2014 10:00:03",
+								y: 30.52
+							}, {
+								x: "20/05/2014 10:20:30",
+								y: 45.76
+							}, {
+								x: "01/06/2014 10:20:30",
+								y: 25.3
+							}, {
+								x: "20/07/2014 10:00:30",
+								y: 20
+							}, {
+								x: "04/11/2014 14:15:01",
+								y: 6.45
+							}, {
+								x: "10/01/2015 16:50:50",
+								y: 20.49
+							}],
+							fill: false,
+							borderColor: 'rgba(255, 99, 132, 1)',
+							lineTension: 0.2
+						}]
+					},
+					options: {
+						legend: {
+							display: false
+						},
+						responsive: true,
+						title: {
+							display: false
+						},
+						scales: {
+							xAxes: [{
+								type: "time",
+								time: {
+									format: timeFormat,
+									tooltipFormat: timeFormat
+								},
+								scaleLabel: {
+									display: true,
+									labelString: 'Time'
+								}
+							}],
+							yAxes: [{
+								scaleLabel: {
+									display: true,
+									labelString: 'dB'
+								}
+							}]
+						}
+					}
+				};
+				var ctx = document.getElementById("canvas" + i).getContext("2d");
+				window.myLine = new Chart(ctx, config);
+
+			}
+
+			$(function() {
+				$('input[name="datetimes"]').daterangepicker({
+					timePicker: true,
+					timePicker24Hour: true,
+					startDate: moment().subtract(7, 'd').format('YYYY-MM-DD HH:mm'),
+					endDate: moment().format('YYYY-MM-DD HH:mm'),
+					locale: {
+						format: 'YYYY-MM-DD HH:mm'
+					}
+				});
+			});
+
+			$('.form-check-input').change(function() {
+				var id = "#s" + $(this).val();
+				if ($(this).is(":checked"))
+					$(id).show();
+				else
+					$(id).hide();
+
+
+				//CHECK IF NO CHECKBOXES ARE TICKED AND DISPLAY MESSAGE
+				var checkboxes = document.querySelectorAll('input[type=checkbox]');
+				var empty = [].filter.call(checkboxes, function(el) {
+					return !el.checked
+				});
+				if (checkboxes.length == empty.length)
+					$(".nosensors").show();
+				else
+					$(".nosensors").hide();
+
+			});
+		</script>
+	</body>
+</html>
