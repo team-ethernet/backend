@@ -16,6 +16,15 @@ public class NoiseData {
 
     private Double value;
 
+    public NoiseData() {
+
+    }
+
+    public NoiseData(final int id, final double value) {
+        this.id = id;
+        this.value = value;
+    }
+
     public Integer getId() {
         return id;
     }
