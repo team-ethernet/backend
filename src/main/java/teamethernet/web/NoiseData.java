@@ -22,6 +22,7 @@ public class NoiseData {
 
     public NoiseData(final int id, final double value) {
         this.id = id;
+        date.setTime((date.getTime() / 1000) * 1000);
         this.value = value;
     }
 
