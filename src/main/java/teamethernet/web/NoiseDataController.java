@@ -29,7 +29,7 @@ public class NoiseDataController {
 
     @GetMapping(path = "/data", produces = {"application/json", "application/xml"})
     public @ResponseBody
-    Iterable<NoiseData> getData(@RequestParam(name = "id", required = false) String id,
+    Iterable<NoiseData> getData(@RequestParam(name = "ids", required = false, defaultValue = "0") List<String> ids,
                                 @RequestParam(name = "startDate", required = false, defaultValue = "2000-01-01")
                                 @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
                                 @RequestParam(name = "endDate", required = false, defaultValue = "9999-12-31")
@@ -39,7 +39,7 @@ public class NoiseDataController {
                                         Double minNoiseLevel,
                                 @RequestParam(name = "maxNoiseLevel", required = false, defaultValue = "200")
                                         Double maxNoiseLevel) {
-        Iterable<NoiseData> noiseData = noiseDataRepository.findAllWith(id, minNoiseLevel, maxNoiseLevel, startDate, endDate);
+        Iterable<NoiseData> noiseData = noiseDataRepository.findAllWith(ids, minNoiseLevel, maxNoiseLevel, startDate, endDate);
 
         return noiseData;
     }
