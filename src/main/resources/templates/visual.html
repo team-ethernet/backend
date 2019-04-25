@@ -161,49 +161,6 @@
 			  <div id="s1">
 				 <canvas id="canvas1" width="400" height="200"></canvas>
 			  </div>
-			  <!--
-			  <div id="s2">
-				 <h3>
-				 Sensor #2</h2>
-				 <canvas id="canvas2" width="400" height="200"></canvas>
-			  </div>
-			  <div id="s3">
-				 <h3>
-				 Sensor #3</h2>
-				 <canvas id="canvas3" width="400" height="200"></canvas>
-			  </div>
-			  <div id="s4">
-				 <h3>
-				 Sensor #4</h2>
-				 <canvas id="canvas4" width="400" height="200"></canvas>
-			  </div>
-			  <div id="s5">
-				 <h3>
-				 Sensor #5</h2>
-				 <canvas id="canvas5" width="400" height="200"></canvas>
-			  </div>
-			  <div id="s6">
-				 <h3>
-				 Sensor #6</h2>
-				 <canvas id="canvas6" width="400" height="200"></canvas>
-			  </div>
-			  <div id="s7">
-				 <h3>
-				 Sensor #7</h2>
-				 <canvas id="canvas7" width="400" height="200"></canvas>
-			  </div>
-			  <div id="s8">
-				 <h3>
-				 Sensor #8</h2>
-				 <canvas id="canvas8" width="400" height="200"></canvas>
-			  </div>
-			  <div id="s9">
-				 <h3>
-				 Sensor #9</h2>
-				 <canvas id="canvas9" width="400" height="200"></canvas>
-			  </div>
-			  !-->
-			  <!--<div class="nosensors">No data to show</div>-->
 		   </div>
 		</div>
 		<footer>
@@ -220,114 +177,108 @@
 				var json = /*[[${NoiseData}]]*/ 'default';
 			/*]]>*/
 			
-			
-			
+			const groupBy = key => array =>
+    array.reduce((objectsByKeyValue, obj) => {
+        const value = obj[key];
+        objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+        return objectsByKeyValue;
+    }, {});
 
-
-		
-		
-		const groupBy = key => array =>
-  array.reduce((objectsByKeyValue, obj) => {
-    const value = obj[key];
-    objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
-    return objectsByKeyValue;
-  }, {});
-		
-		const groupById = groupBy('noiseSensorId');
-		var sortedarray = groupById(json);
+const groupById = groupBy('noiseSensorId');
+var sortedarray = groupById(json);
 
 
 
-		
-		function randomDate(start, end, startHour, endHour) {
-		  var date = new Date(+start + Math.random() * (end - start));
-		  var hour = startHour + Math.random() * (endHour - startHour) | 0;
-		  date.setHours(hour);
-		  return date;
-		}
-		
-			var timeFormat = 'DD/MM/YYYY HH:mm:ss';
 
-				var dateArray = [];
-				var k;
-				for (k = 0; k < 20; k++) {
-					dateArray.push(randomDate(new Date("2018-04-24 16:27"), new Date("2019-04-24 16:27"), 0, 23));
-				}
-				dateArray.sort(function(a, b) {
-					return b>a ? -1 : b<a ? 1 : 0;
-				});
-				var config = {
-					type: 'line',
-					data: {
-						datasets: []
-					},
-					options: {
+function randomDate(start, end, startHour, endHour) {
+    var date = new Date(+start + Math.random() * (end - start));
+    var hour = startHour + Math.random() * (endHour - startHour) | 0;
+    date.setHours(hour);
+    return date;
+}
+
+var timeFormat = 'DD/MM/YYYY HH:mm:ss';
+
+var dateArray = [];
+var k;
+for (k = 0; k < 20; k++) {
+    dateArray.push(randomDate(new Date("2018-04-24 16:27"), new Date("2019-04-24 16:27"), 0, 23));
+}
+dateArray.sort(function(a, b) {
+    return b > a ? -1 : b < a ? 1 : 0;
+});
+var config = {
+    type: 'line',
+    data: {
+        datasets: []
+    },
+    options: {
         legendCallback: function(chart) {
             console.log(chart);
             var legendHtml = [];
             legendHtml.push('<table>');
             legendHtml.push('<tr>');
-            for (var i=0; i<chart.data.datasets.length; i++) {
-                legendHtml.push('<div class="chart-legend" style="background-color:' + chart.data.datasets[i].backgroundColor + '"></div>');                    
+            for (var i = 0; i < chart.data.datasets.length; i++) {
+                legendHtml.push('<div class="chart-legend" style="background-color:' + chart.data.datasets[i].backgroundColor + '"></div>');
                 if (chart.data.datasets[i].label) {
-                    legendHtml.push('<input id="'+chart.data.datasets[i].label+'" type="checkbox" class="'+chart.data.datasets[i].label+'" onclick="updateDataset(event, ' + '\'' + chart.legend.legendItems[i].datasetIndex + '\', ' + chart.data.datasets[i].label + ')"> <label for="'+chart.data.datasets[i].label+'">' + chart.data.datasets[i].label + '<span style="background-color: '+chart.data.datasets[i].borderColor+'"></span></label>');
-                }                                                                              
-            }                                                   
-            return legendHtml.join("");                                                        
-        },                                                                                     
-        legend: {                                                                              
-            display: false                                                                     
+                    legendHtml.push('<input id="' + chart.data.datasets[i].label + '" type="checkbox" class="' + chart.data.datasets[i].label + '" onclick="updateDataset(event, ' + '\'' + chart.legend.legendItems[i].datasetIndex + '\', ' + chart.data.datasets[i].label + ')"> <label for="' + chart.data.datasets[i].label + '">' + chart.data.datasets[i].label + '<span style="background-color: ' + chart.data.datasets[i].borderColor + '"></span></label>');
+                }
+            }
+            return legendHtml.join("");
         },
-						responsive: true,
-						title: {
-							display: false
-						},
-						scales: {
-							xAxes: [{
-								type: "time",
-								time: {
-									format: timeFormat,
-									tooltipFormat: timeFormat
-								},
-								scaleLabel: {
-									display: true,
-									labelString: 'Time'
-								}
-							}],
-							yAxes: [{
-								scaleLabel: {
-									display: true,
-									labelString: 'dB'
-								}
-							}]
-						}
-					}
-				};
-				
-    updateDataset = function(e, datasetIndex, checkboxclass) {
-        var index = datasetIndex;
-        var ci = e.view.chart;
-        var meta = ci.getDatasetMeta(index);
+        legend: {
+            display: false
+        },
+        responsive: true,
+        title: {
+            display: false
+        },
+        scales: {
+            xAxes: [{
+                type: "time",
+                time: {
+                    format: timeFormat,
+                    tooltipFormat: timeFormat
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Time'
+                }
+            }],
+            yAxes: [{
+                scaleLabel: {
+                    display: true,
+                    labelString: 'dB'
+                }
+            }]
+        }
+    }
+};
 
-		if ($("." + checkboxclass).is(":checked"))
-			meta.hidden = false;		
-		else
-			meta.hidden = null;
+updateDataset = function(e, datasetIndex, checkboxclass) {
+    var index = datasetIndex;
+    var ci = e.view.chart;
+    var meta = ci.getDatasetMeta(index);
 
-        ci.update();
-    };
-				
-				
-				function hashCode(str) { // java String#hashCode
+    if ($("." + checkboxclass).is(":checked"))
+        meta.hidden = false;
+    else
+        meta.hidden = null;
+
+    ci.update();
+};
+
+
+function hashCode(str) {
     var hash = 0;
     for (var i = 0; i < str.length; i++) {
-       hash = str.charCodeAt(i) + ((hash << 5) - hash);
+        hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
     return hash;
 }
 
 
-function intToRGB(i){
+function intToRGB(i) {
     var c = (i & 0x00FFFFFF)
         .toString(16)
         .toUpperCase();
@@ -336,67 +287,44 @@ function intToRGB(i){
 }
 
 
-				
-				for (var key in sortedarray) {
-					var color = intToRGB(hashCode(key));
-				//	var str = '<div class="form-check"><input class="form-check-input" type="checkbox" checked value="'+key+'" id="defaultCheck'+key+'"><label class="form-check-label" for="defaultCheck'+key+'">Sensor '+key+'<span style="background-color: #'+color+'"></span></label></div>';
-					//$(".sensorselectbox").append(str);
-					var datasetdata = {label: key, data: [], fill:false, borderColor: '#'+color, lineTension: 0.2, hidden:true};
-					var i;
-					for (i=0; i<sortedarray[key].length;i++) {
-						datasetdata.data.push({x: moment(sortedarray[key][i].date).format(timeFormat), y: sortedarray[key][i].value});
-					}
-					config.data.datasets.push(datasetdata);
-				}
-				
-				
-				var ctx = document.getElementById("canvas1").getContext("2d");
-				chart = new Chart(ctx, config);
-				document.getElementById('sensorselectbox').innerHTML = chart.generateLegend();
-				
-				
-			$(function() {
-				$('input[name="datetimes"]').daterangepicker({
-					timePicker: true,
-					timePicker24Hour: true,
-					startDate: moment().subtract(7, 'd').format('YYYY-MM-DD HH:mm'),
-					endDate: moment().add(7, 'd').format('YYYY-MM-DD HH:mm'),
-					locale: {
-						format: 'YYYY-MM-DD HH:mm'
-					}
-				});
-			});
-			
 
-			
-			/*
-			$('.form-check-input').change(function() {
-				var checked = $(this).is(":checked");
-				var val = $(this).val();
-				config.data.datasets.forEach(function(e) {
-					console.log(e);
-						if (e == val) {
-							if (checked)
-								e.hidden = false;
-							else
-								e.hidden = true;
-						}
-					});
-			
-				//var id = "#s" + $(this).val();
+for (var key in sortedarray) {
+    var color = intToRGB(hashCode(key));
+    var datasetdata = {
+        label: key,
+        data: [],
+        fill: false,
+        borderColor: '#' + color,
+        lineTension: 0.2,
+        hidden: true
+    };
+    var i;
+    for (i = 0; i < sortedarray[key].length; i++) {
+        datasetdata.data.push({
+            x: moment(sortedarray[key][i].date).format(timeFormat),
+            y: sortedarray[key][i].value
+        });
+    }
+    config.data.datasets.push(datasetdata);
+}
 
-				//CHECK IF NO CHECKBOXES ARE TICKED AND DISPLAY MESSAGE
-				var checkboxes = document.querySelectorAll('input[type=checkbox]');
-				var empty = [].filter.call(checkboxes, function(el) {
-					return !el.checked
-				});
-				if (checkboxes.length == empty.length)
-					$(".nosensors").show();
-				else
-					$(".nosensors").hide();
 
-			});
-			*/
+var ctx = document.getElementById("canvas1").getContext("2d");
+chart = new Chart(ctx, config);
+document.getElementById('sensorselectbox').innerHTML = chart.generateLegend();
+
+
+$(function() {
+    $('input[name="datetimes"]').daterangepicker({
+        timePicker: true,
+        timePicker24Hour: true,
+        startDate: moment().subtract(7, 'd').format('YYYY-MM-DD HH:mm'),
+        endDate: moment().add(7, 'd').format('YYYY-MM-DD HH:mm'),
+        locale: {
+            format: 'YYYY-MM-DD HH:mm'
+        }
+    });
+});
 		</script>
 	</body>
 </html>
