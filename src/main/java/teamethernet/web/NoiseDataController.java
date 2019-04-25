@@ -27,19 +27,21 @@ public class NoiseDataController {
         return "visual";
     }
 
-    @GetMapping(path = "/data")
+    @GetMapping(path = "/data", produces = {"application/json", "application/xml"})
     public @ResponseBody
-    Iterable<NoiseData> getData(@RequestParam(name="id", required=false) String id,
-                                @RequestParam(name="startDate", required=false, defaultValue = "2000-01-01")
+    Iterable<NoiseData> getData(@RequestParam(name = "id", required = false) String id,
+                                @RequestParam(name = "startDate", required = false, defaultValue = "2000-01-01")
                                 @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
-                                @RequestParam(name="endDate", required=false, defaultValue = "9999-12-31") // TODO: change to today's date
+                                @RequestParam(name = "endDate", required = false, defaultValue = "9999-12-31")
+                                // TODO: change to today's date
                                 @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDate,
-                                @RequestParam(name="minNoiseLevel", required=false,  defaultValue = "0")
+                                @RequestParam(name = "minNoiseLevel", required = false, defaultValue = "0")
                                         Double minNoiseLevel,
-                                @RequestParam(name="maxNoiseLevel", required=false, defaultValue = "200")
+                                @RequestParam(name = "maxNoiseLevel", required = false, defaultValue = "200")
                                         Double maxNoiseLevel) {
+        Iterable<NoiseData> noiseData = noiseDataRepository.findAllWith(id, minNoiseLevel, maxNoiseLevel, startDate, endDate);
 
-        return noiseDataRepository.findAllWith(id, minNoiseLevel, maxNoiseLevel, startDate,endDate);
+        return noiseData;
     }
 
     private List<NoiseData> getNoiseData() {
