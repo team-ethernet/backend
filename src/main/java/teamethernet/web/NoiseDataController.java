@@ -1,6 +1,5 @@
 package teamethernet.web;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,7 +26,7 @@ public class NoiseDataController {
 
     @GetMapping(path = "/data")
     public @ResponseBody
-    Iterable<NoiseData> getData(Model model) throws JsonProcessingException{
+    Iterable<NoiseData> getData(Model model) {
         return noiseDataRepository.findAll();
     }
 
