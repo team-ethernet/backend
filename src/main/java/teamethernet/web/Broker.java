@@ -11,17 +11,17 @@ import java.util.Random;
 public class Broker implements Runnable {
     private Random random = new Random();
 
-    private static final int[] ids = {
-            929999847,
-            515676268,
-            224848244,
-            594341611,
-            935869279,
-            568867946,
-            153821318,
-            406995257,
-            592054277,
-            684384942
+    private static final String[] ids = {
+            "929999847",
+            "515676268",
+            "224848244",
+            "594341611",
+            "935869279",
+            "568867946",
+            "153821318",
+            "406995257",
+            "592054277",
+            "684384942"
     };
 
     @Autowired
