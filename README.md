@@ -3,6 +3,7 @@ Repository for the web page
 
 ## Dependencies
 * [Spring](https://start.spring.io/)
+* [MySQL](https://dev.mysql.com/downloads/)
 
 ## Good things to know
 
