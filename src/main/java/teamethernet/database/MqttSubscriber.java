@@ -10,6 +10,7 @@ import teamethernet.web.NoiseDataRepository;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.UUID;
 
 @Service
 public class MqttSubscriber implements MqttCallback {
@@ -21,7 +22,7 @@ public class MqttSubscriber implements MqttCallback {
     @PostConstruct
     public void connect() {
         try {
-            client = new MqttClient("tcp://130.229.171.198:1883", "Subscribing");
+            client = new MqttClient("tcp://130.229.171.198:1883", "dbSub" + UUID.randomUUID());
             client.connect();
             client.setCallback(this);
             client.subscribe("noisesensor/+/sensors");
