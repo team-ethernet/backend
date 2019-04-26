@@ -54,9 +54,9 @@ public class NoiseDataController {
                                 // TODO: change to today's date
                                 @DateTimeFormat(pattern = "yyyy-MM-dd_HH:mm") Date endDate,
                                 @RequestParam(name = "minNoiseLevel", required = false, defaultValue = "0")
-                                        Double minNoiseLevel,
+                                        int minNoiseLevel,
                                 @RequestParam(name = "maxNoiseLevel", required = false, defaultValue = "200")
-                                        Double maxNoiseLevel,
+                                        int maxNoiseLevel,
                                 @RequestParam(name = "sortBy", required = false, defaultValue = "date")
                                         String sortBy,
                                 @RequestParam(name = "sortOrder", required = false, defaultValue = "asc")

@@ -16,8 +16,8 @@ public interface NoiseDataRepository extends JpaRepository<NoiseData, Integer> {
             "row.date >= :startDate and " +
             "row.date <= :endDate")
     Iterable<NoiseData> findAllWith(@Param("ids") List<String> ids,
-                                    @Param("minNoiseLevel") double minNoiseLevel,
-                                    @Param("maxNoiseLevel") double maxNoiseLevel,
+                                    @Param("minNoiseLevel") int minNoiseLevel,
+                                    @Param("maxNoiseLevel") int maxNoiseLevel,
                                     @Param("startDate") Date startDate,
                                     @Param("endDate") Date endDate,
                                     Sort sort);

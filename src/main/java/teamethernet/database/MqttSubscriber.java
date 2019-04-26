@@ -40,7 +40,7 @@ public class MqttSubscriber implements MqttCallback {
     public void messageArrived(String topic, MqttMessage message) throws IOException {
         JsonNode jsonNode = new ObjectMapper().readTree(message.toString());
 
-        NoiseData noiseData = new NoiseData(jsonNode.get("node_id").asText(), jsonNode.get("db").doubleValue());
+        NoiseData noiseData = new NoiseData(jsonNode.get("node_id").asText(), jsonNode.get("db").intValue());
         noiseDataRepository.save(noiseData);
     }
 

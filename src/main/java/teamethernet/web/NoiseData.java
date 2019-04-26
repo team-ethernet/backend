@@ -14,17 +14,17 @@ public class NoiseData {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date = new Date();
 
-    private Double value;
+    private Integer value;
 
     public NoiseData() {}
 
-    public NoiseData(final String noiseSensorId, final double value) {
+    public NoiseData(final String noiseSensorId, final int value) {
         this.noiseSensorId = noiseSensorId;
         date.setTime((date.getTime() / 1000) * 1000);
         this.value = value;
     }
 
-    public NoiseData(final String noiseSensorId, final Date date, final double value) {
+    public NoiseData(final String noiseSensorId, final Date date, final int value) {
         this.noiseSensorId = noiseSensorId;
         this.date = date;
         this.value = value;
@@ -46,11 +46,11 @@ public class NoiseData {
         this.date = date;
     }
 
-    public Double getValue() {
+    public int getValue() {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(int value) {
         this.value = value;
     }
 

@@ -11,7 +11,7 @@ public interface API {
     static Iterable<NoiseData> getAverageNoiseData(final Iterable<NoiseData> noiseData, final Date date) {
         date.setTime(getEarliestDate(date, new Date()).getTime());
 
-        Map<String, List<Double>> idToNoiseData = new HashMap<>();
+        Map<String, List<Integer>> idToNoiseData = new HashMap<>();
         for (final NoiseData row : noiseData) {
             if (!idToNoiseData.containsKey(row.getNoiseSensorId())) {
                 idToNoiseData.put(row.getNoiseSensorId(), new ArrayList<>());
@@ -21,14 +21,14 @@ public interface API {
 
         final List<NoiseData> averageNoiseData = new ArrayList<>();
 
-        double globalAverage = 0;
+        int globalAverage = 0;
 
         for (final String key : idToNoiseData.keySet()) {
-            double sum = 0;
-            for(Double keyValue : idToNoiseData.get(key)){
+            int sum = 0;
+            for(int keyValue : idToNoiseData.get(key)){
                 sum += keyValue;
             }
-            final double average = sum / idToNoiseData.get(key).size();
+            final int average = sum / idToNoiseData.get(key).size();
             averageNoiseData.add(new NoiseData(key, date, average));
 
             globalAverage += average;
