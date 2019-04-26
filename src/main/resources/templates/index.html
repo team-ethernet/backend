@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
    <head>
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -44,13 +44,14 @@
          padding-bottom: 80px;
          }
       </style>
-      <link rel="icon" href="../static/images/icon2.ico"/>
+      <link rel="icon" th:href="@{images/icon2.ico}" href="../static/images/icon2.ico"/>
    </head>
    <body>
       <main role="main">
          <div class="jumbotron">
             <div class="container marketing">
-			   <img class="logo" src="../static/images/noisyIoP_logo.png" alt="noisyIoT">
+               <img class="logo" src="../static/images/noisyIoP_logo.png"
+                    th:src="@{images/noisyIoP_logo.png}" alt="noisyIoT">
                <h1 class="display-3">Internet of Noisy things</h1>
                <p class="lead">Welcome to the noise level website</p>
                <hr class="my-4">
@@ -64,13 +65,15 @@
          <div class="container marketing">
             <div class="row">
                <div class="col-md-6 colpadding col-sm-12">
-                  <img class="roundimage" src="../static/images/graph_better.jpg" alt="">
+                  <img class="roundimage" src="../static/images/graph_better.jpg"
+                       th:src="@{images/graph_better.jpg}" alt="">
                   <h2>Visualization</h2>
                   <p>A visualization of the noise data represented by graphs.</p>
                   <p><a class="btn btn-secondary" href="/visualization" role="button">View details &raquo;</a></p>
                </div>
                <div class="col-md-6 colpadding col-sm-12">
-                  <img class="roundimage" src="../static/images/data_better.jpg" alt="">
+                  <img class="roundimage" src="../static/images/data_better.jpg"
+                       th:src="@{images/data_better.jpg}" alt="">
                   <h2>API</h2>
                   <p>Visit our API page for accessing the database.</p>
                   <p><a class="btn btn-secondary" href="/api" role="button">View details &raquo;</a></p>
