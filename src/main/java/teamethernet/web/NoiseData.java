@@ -1,41 +1,49 @@
 package teamethernet.web;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 public class NoiseData {
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
+
+    private String noiseSensorId;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date = new Date();
 
     private Double value;
 
-    public NoiseData() {
+    public NoiseData() {}
 
-    }
-
-    public NoiseData(final int id, final double value) {
-        this.id = id;
+    public NoiseData(final String noiseSensorId, final double value) {
+        this.noiseSensorId = noiseSensorId;
         date.setTime((date.getTime() / 1000) * 1000);
         this.value = value;
     }
 
-    public Integer getId() {
-        return id;
+    public NoiseData(final String noiseSensorId, final Date date, final double value) {
+        this.noiseSensorId = noiseSensorId;
+        this.date = date;
+        this.value = value;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getNoiseSensorId() {
+        return noiseSensorId;
+    }
+
+    public void setNoiseSensorId(String noiseSensorId) {
+        this.noiseSensorId = noiseSensorId;
     }
 
     public Date getDate() {
         return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Double getValue() {
