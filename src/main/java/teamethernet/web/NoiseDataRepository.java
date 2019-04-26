@@ -1,5 +1,6 @@
 package teamethernet.web;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +19,8 @@ public interface NoiseDataRepository extends JpaRepository<NoiseData, Integer> {
                                     @Param("minNoiseLevel") double minNoiseLevel,
                                     @Param("maxNoiseLevel") double maxNoiseLevel,
                                     @Param("startDate") Date startDate,
-                                    @Param("endDate") Date endDate);
+                                    @Param("endDate") Date endDate,
+                                    Sort sort);
 
 
 

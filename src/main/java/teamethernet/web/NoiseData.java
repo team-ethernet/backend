@@ -38,6 +38,10 @@ public class NoiseData {
         return date;
     }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
     public Double getValue() {
         return value;
     }
