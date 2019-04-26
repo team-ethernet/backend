@@ -26,6 +26,11 @@ public class NoiseDataController {
         return "index";
     }
 
+    @GetMapping(path = "/api")
+    public String getAPIPage() {
+        return "API";
+    }
+
     @GetMapping(path = "/visualization")
     public String getVisualization(Model model) {
         List<NoiseData> noiseData = getNoiseData();

@@ -11,7 +11,7 @@
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-		<link rel="icon" href="images/icon2.ico"/>
+		<link rel="icon" href="../static/images/icon2.ico"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<title>Noise sensor monitor</title>
 		<style>
@@ -134,7 +134,8 @@
 	<body>
 		<header>
 			<div class="container">
-				<a href="/"><img class="logo" src="images/noisyIoP_logo.png" alt="noisyIoT"></a>
+				<a href="/"><img class="logo" src="../static/images/noisyIoP_logo.png"
+                                 th:src="@{../static/images/noisyIoP_logo.png}" alt="noisyIoT"></a>
 			   <h1>Noise sensor monitor</h1>
 			   <div class="clearfix"></div>
 			</div>
