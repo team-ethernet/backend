@@ -1,16 +1,17 @@
 package teamethernet.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import teamethernet.api.API;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 public class NoiseDataController {
@@ -54,62 +55,12 @@ public class NoiseDataController {
                                         boolean average) {
 
         Iterable<NoiseData> noiseData = noiseDataRepository.findAllWith(
-                ids, minNoiseLevel, maxNoiseLevel, startDate, endDate, getSort(sortBy, sortOrder));
+                ids, minNoiseLevel, maxNoiseLevel, startDate, endDate, API.getSort(sortBy, sortOrder));
 
         if(average){
-            noiseData = getAverageNoiseData(noiseData, endDate);
+            noiseData = API.getAverageNoiseData(noiseData, endDate);
         }
 
         return noiseData;
-    }
-
-    private Date getEarliestDate(final Date date1, final Date date2) {
-        return date1.before(date2) ? date1 : date2;
-    }
-
-    private Iterable<NoiseData> getAverageNoiseData(final Iterable<NoiseData> noiseData, final Date date) {
-        date.setTime(getEarliestDate(date, new Date()).getTime());
-
-        Map<String, List<Double>> idToNoiseData = new HashMap<>();
-        for (final NoiseData row : noiseData) {
-            if (!idToNoiseData.containsKey(row.getNoiseSensorId())) {
-                idToNoiseData.put(row.getNoiseSensorId(), new ArrayList<>());
-            }
-            idToNoiseData.get(row.getNoiseSensorId()).add(row.getValue());
-        }
-
-        final List<NoiseData> averageNoiseData = new ArrayList<>();
-
-        double globalAverage = 0;
-
-        for (final String key : idToNoiseData.keySet()) {
-            double sum = 0;
-            for(Double keyValue : idToNoiseData.get(key)){
-                sum += keyValue;
-            }
-            final double average = sum / idToNoiseData.get(key).size();
-            averageNoiseData.add(new NoiseData(key, date, average));
-
-            globalAverage += average;
-        }
-
-        globalAverage /= idToNoiseData.size();
-        averageNoiseData.add(new NoiseData("global average", date, globalAverage));
-
-        return averageNoiseData;
-    }
-
-    private Sort getSort(final String sortBy, final String sortOrder) {
-        Sort sort;
-        switch (sortOrder) {
-            case "desc":
-                sort = JpaSort.by(sortBy).descending();
-                break;
-            default:
-                sort = JpaSort.by(sortBy).ascending();
-                break;
-        }
-
-        return sort;
     }
 }
