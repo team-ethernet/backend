@@ -16,13 +16,17 @@ public class NoiseData {
 
     private Double value;
 
-    public NoiseData() {
-
-    }
+    public NoiseData() {}
 
     public NoiseData(final String noiseSensorId, final double value) {
         this.noiseSensorId = noiseSensorId;
         date.setTime((date.getTime() / 1000) * 1000);
+        this.value = value;
+    }
+
+    public NoiseData(final String noiseSensorId, final Date date, final double value) {
+        this.noiseSensorId = noiseSensorId;
+        this.date = date;
         this.value = value;
     }
 
