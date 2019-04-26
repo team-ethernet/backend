@@ -7,8 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages={"teamethernet.web"})
-@EntityScan(basePackages={"teamethernet.web"})
+@ComponentScan(basePackages={"teamethernet.web", "teamethernet.api"})
+@EntityScan(basePackages={"teamethernet.web", "teamethernet.api"})
 @EnableJpaRepositories("teamethernet.web")
 public class WebPageApplication {
 
