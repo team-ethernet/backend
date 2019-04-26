@@ -225,7 +225,7 @@ var config = {
             for (var i = 0; i < chart.data.datasets.length; i++) {
                 legendHtml.push('<div class="chart-legend" style="background-color:' + chart.data.datasets[i].backgroundColor + '"></div>');
                 if (chart.data.datasets[i].label) {
-                    legendHtml.push('<input id="' + chart.data.datasets[i].label + '" type="checkbox" class="' + chart.data.datasets[i].label + '" onclick="updateDataset(event, ' + '\'' + chart.legend.legendItems[i].datasetIndex + '\', ' + chart.data.datasets[i].label + ')"> <label for="' + chart.data.datasets[i].label + '">' + chart.data.datasets[i].label + '<span style="background-color: ' + chart.data.datasets[i].borderColor + '"></span></label>');
+                    legendHtml.push('<input id="' + chart.data.datasets[i].label + '" type="checkbox" class="' + chart.data.datasets[i].label + '" onclick="updateDataset(event, ' + '\'' + chart.legend.legendItems[i].datasetIndex + '\', \'' + chart.data.datasets[i].label + '\')"> <label for="' + chart.data.datasets[i].label + '">' + chart.data.datasets[i].label + '<span style="background-color: ' + chart.data.datasets[i].borderColor + '"></span></label>');
                 }
             }
             return legendHtml.join("");
