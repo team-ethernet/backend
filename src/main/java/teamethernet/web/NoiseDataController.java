@@ -21,6 +21,11 @@ public class NoiseDataController {
     @Autowired
     NoiseDataRepository noiseDataRepository;
 
+    @GetMapping(path = "/")
+    public String getStartPage() {
+        return "index";
+    }
+
     @GetMapping(path = "/visualization")
     public String getVisualization(Model model) {
         List<NoiseData> noiseData = getNoiseData();
