@@ -7,7 +7,8 @@ Repository for the web page
 
 ## Good things to know
 
-html-files should go under team-ethernet.web\src\main\resources\templates
+HTML files should go under team-ethernet.web\src\main\resources\templates
+Images should go under team-ethernet.web\src\main\resources\static\images
 
 ## Getting started with the database
 1. Make sure a MySQL server is running on port 3306
