@@ -41,16 +41,14 @@ public class MqttSubscriber implements MqttCallback {
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws IOException {
-        // TODO: Use convertSenMLToNoiseData to create NoiseData
-        JsonNode jsonNode = new ObjectMapper().readTree(message.toString());
-        NoiseData noiseData = new NoiseData(jsonNode.get("node_id").asText(), "dB", jsonNode.get("db").intValue());
+        NoiseData noiseData = convertSenMLToNoiseData(message);
 
         noiseDataRepository.save(noiseData);
     }
 
     private NoiseData convertSenMLToNoiseData (final MqttMessage message) throws IOException {
         JsonNode jsonNode = new ObjectMapper().readTree(message.toString());
-        final String name = jsonNode.get("n").asText();
+        final String name = jsonNode.get("bn").asText();
         final String unit = jsonNode.get("u").asText();
         final float value = jsonNode.get("v").floatValue();
 

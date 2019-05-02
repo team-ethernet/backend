@@ -46,9 +46,9 @@ public class NoiseDataController {
         return noiseData;
     }
 
-    @GetMapping(path = "/data", produces = {"application/json", "application/xml"})
+    @GetMapping(path = "/data", produces = {"application/json"})
     public @ResponseBody
-    Iterable<NoiseData> getData(@RequestParam(name = "ids", required = false, defaultValue = "0") List<String> ids,
+    List<NoiseDataDTO> getData(@RequestParam(name = "ids", required = false, defaultValue = "0") List<String> ids,
                                 @RequestParam(name = "startDate", required = false, defaultValue = "0")
                                         long startDate,
                                 @RequestParam(name = "endDate", required = false, defaultValue = "999999999999")
@@ -78,6 +78,9 @@ public class NoiseDataController {
             noiseData = API.getAverageNoiseData(noiseData, endDate);
         }
 
-        return noiseData;
+        final List<NoiseDataDTO> noiseDataDTOs = new ArrayList<>();
+        noiseData.forEach(data -> noiseDataDTOs.add(NoiseDataDTO.fromEntity(data)));
+
+        return noiseDataDTOs;
     }
 }
