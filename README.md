@@ -1,15 +1,9 @@
 # team-ethernet.web
-Repository for the web page
+Repository for the server
 
 ## Dependencies
 * [Spring](https://start.spring.io/)
 * [MySQL](https://dev.mysql.com/downloads/)
-
-## Good things to know
-
-HTML files should go under team-ethernet.web\src\main\resources\templates
-
-Images should go under team-ethernet.web\src\main\resources\static\images
 
 ## Getting started with the database
 1. Make sure a MySQL server is running on port 3306 (username: root, password: root)
