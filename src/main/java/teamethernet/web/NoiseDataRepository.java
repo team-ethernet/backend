@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface NoiseDataRepository extends JpaRepository<NoiseData, Integer> {
 
-    @Query("select row from NoiseData row where ('0' in (:ids) or row.noiseSensorId in (:ids)) and " +
+    @Query("select row from NoiseData row where ('0' in (:ids) or row.name in (:ids)) and " +
             "row.value <= :maxNoiseLevel and " +
             "row.value >= :minNoiseLevel and " +
             "row.date >= :startDate and " +

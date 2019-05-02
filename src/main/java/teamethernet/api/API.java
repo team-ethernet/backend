@@ -13,10 +13,10 @@ public interface API {
 
         Map<String, List<Integer>> idToNoiseData = new HashMap<>();
         for (final NoiseData row : noiseData) {
-            if (!idToNoiseData.containsKey(row.getNoiseSensorId())) {
-                idToNoiseData.put(row.getNoiseSensorId(), new ArrayList<>());
+            if (!idToNoiseData.containsKey(row.getName())) {
+                idToNoiseData.put(row.getName(), new ArrayList<>());
             }
-            idToNoiseData.get(row.getNoiseSensorId()).add(row.getValue());
+            idToNoiseData.get(row.getName()).add(row.getValue());
         }
 
         final List<NoiseData> averageNoiseData = new ArrayList<>();
@@ -25,17 +25,17 @@ public interface API {
 
         for (final String key : idToNoiseData.keySet()) {
             int sum = 0;
-            for(int keyValue : idToNoiseData.get(key)){
+            for (int keyValue : idToNoiseData.get(key)) {
                 sum += keyValue;
             }
             final int average = sum / idToNoiseData.get(key).size();
-            averageNoiseData.add(new NoiseData(key, date, average));
+            averageNoiseData.add(new NoiseData(key, "dB", average, date));
 
             globalAverage += average;
         }
 
         globalAverage /= idToNoiseData.size();
-        averageNoiseData.add(new NoiseData("global average", date, globalAverage));
+        averageNoiseData.add(new NoiseData("global average", "dB", globalAverage, date));
 
         return averageNoiseData;
     }
@@ -46,13 +46,10 @@ public interface API {
 
     static Sort getSort(final String sortBy, final String sortOrder) {
         Sort sort;
-        switch (sortOrder) {
-            case "desc":
-                sort = JpaSort.by(sortBy).descending();
-                break;
-            default:
-                sort = JpaSort.by(sortBy).ascending();
-                break;
+        if ("desc".equalsIgnoreCase(sortOrder)) {
+            sort = JpaSort.by(sortBy).descending();
+        } else {
+            sort = JpaSort.by(sortBy).ascending();
         }
 
         return sort;

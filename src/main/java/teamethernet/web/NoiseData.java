@@ -6,44 +6,49 @@ import java.util.Date;
 @Entity
 public class NoiseData {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String noiseSensorId;
+    private String name;
+
+    private String unit;
+
+    private Integer value;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date = new Date();
 
-    private Integer value;
+    public NoiseData() {
+    }
 
-    public NoiseData() {}
-
-    public NoiseData(final String noiseSensorId, final int value) {
-        this.noiseSensorId = noiseSensorId;
+    public NoiseData(final String name, final String unit, final int value) {
+        setName(name);
+        setUnit(unit);
+        setValue(value);
         date.setTime((date.getTime() / 1000) * 1000);
-        this.value = value;
     }
 
-    public NoiseData(final String noiseSensorId, final Date date, final int value) {
-        this.noiseSensorId = noiseSensorId;
-        this.date = date;
-        this.value = value;
+    public NoiseData(final String name, final String unit, final int value, final Date date) {
+        setName(name);
+        setUnit(unit);
+        setValue(value);
+        setDate(date);
     }
 
-    public String getNoiseSensorId() {
-        return noiseSensorId;
+    public String getName() {
+        return name;
     }
 
-    public void setNoiseSensorId(String noiseSensorId) {
-        this.noiseSensorId = noiseSensorId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Date getDate() {
-        return date;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     public int getValue() {
@@ -52,6 +57,14 @@ public class NoiseData {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
 }
