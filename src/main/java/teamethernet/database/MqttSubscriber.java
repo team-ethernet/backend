@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import teamethernet.web.NoiseData;
-import teamethernet.web.NoiseDataRepository;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -33,22 +31,28 @@ public class MqttSubscriber implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable cause) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void messageArrived(String topic, MqttMessage message) throws IOException {
-        JsonNode jsonNode = new ObjectMapper().readTree(message.toString());
-
-        NoiseData noiseData = new NoiseData(jsonNode.get("node_id").asText(), jsonNode.get("db").intValue());
-        noiseDataRepository.save(noiseData);
+        // TODO: Auto-generated method stub
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
-        // TODO Auto-generated method stub
+        // TODO: Auto-generated method stub
+    }
 
+    @Override
+    public void messageArrived(String topic, MqttMessage message) throws IOException {
+        NoiseData noiseData = convertSenMLToNoiseData(message);
+
+        noiseDataRepository.save(noiseData);
+    }
+
+    private NoiseData convertSenMLToNoiseData (final MqttMessage message) throws IOException {
+        JsonNode jsonNode = new ObjectMapper().readTree(message.toString());
+        final String name = jsonNode.get("bn").asText();
+        final String unit = jsonNode.get("u").asText();
+        final float value = jsonNode.get("v").floatValue();
+
+        return new NoiseData(name, unit, value);
     }
 
 }

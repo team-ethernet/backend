@@ -194,9 +194,6 @@
 	const groupById = groupBy('noiseSensorId');
 	var sortedarray = groupById(json);
 
-
-
-
 //FORMAT TO BE USED BY GRAPH
 var timeFormat = 'DD/MM/YYYY HH:mm:ss';
 
@@ -230,8 +227,8 @@ var config = {
         },
         scales: {
             xAxes: [{
-                type: "time",
-                time: {
+                type: "unixTime",
+                unixTime: {
                     format: timeFormat,
                     tooltipFormat: timeFormat
                 },
@@ -297,7 +294,7 @@ for (var key in sortedarray) {
     var i;
     for (i = 0; i < sortedarray[key].length; i++) {
         datasetdata.data.push({
-            x: moment(sortedarray[key][i].date).format(timeFormat),
+            x: moment(sortedarray[key][i].unixTime).format(timeFormat),
             y: sortedarray[key][i].value
         });
     }
