@@ -2,16 +2,17 @@ package teamethernet.api;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.JpaSort;
-import teamethernet.web.NoiseData;
+import teamethernet.database.NoiseData;
 
 import java.util.*;
 
 public interface API {
 
-    static Iterable<NoiseData> getAverageNoiseData(final Iterable<NoiseData> noiseData, final Date date) {
-        date.setTime(getEarliestDate(date, new Date()).getTime());
+    static Iterable<NoiseData> getAverageNoiseData(final Iterable<NoiseData> noiseData, long unixTime) {
+        final long today = new Date().getTime();
+        unixTime = today < unixTime ? today : unixTime;
 
-        Map<String, List<Integer>> idToNoiseData = new HashMap<>();
+        Map<String, List<Float>> idToNoiseData = new HashMap<>();
         for (final NoiseData row : noiseData) {
             if (!idToNoiseData.containsKey(row.getName())) {
                 idToNoiseData.put(row.getName(), new ArrayList<>());
@@ -21,27 +22,23 @@ public interface API {
 
         final List<NoiseData> averageNoiseData = new ArrayList<>();
 
-        int globalAverage = 0;
+        float globalAverage = 0;
 
         for (final String key : idToNoiseData.keySet()) {
             int sum = 0;
-            for (int keyValue : idToNoiseData.get(key)) {
+            for (float keyValue : idToNoiseData.get(key)) {
                 sum += keyValue;
             }
-            final int average = sum / idToNoiseData.get(key).size();
-            averageNoiseData.add(new NoiseData(key, "dB", average, date));
+            final float average = sum / idToNoiseData.get(key).size();
+            averageNoiseData.add(new NoiseData(key, "dB", average, unixTime));
 
             globalAverage += average;
         }
 
         globalAverage /= idToNoiseData.size();
-        averageNoiseData.add(new NoiseData("global average", "dB", globalAverage, date));
+        averageNoiseData.add(new NoiseData("global average", "dB", globalAverage, unixTime));
 
         return averageNoiseData;
-    }
-
-    static Date getEarliestDate(final Date date1, final Date date2) {
-        return date1.before(date2) ? date1 : date2;
     }
 
     static Sort getSort(final String sortBy, final String sortOrder) {

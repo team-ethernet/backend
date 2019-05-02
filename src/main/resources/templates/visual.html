@@ -198,7 +198,7 @@ var sortedarray = groupById(json);
 function randomDate(start, end, startHour, endHour) {
     var date = new Date(+start + Math.random() * (end - start));
     var hour = startHour + Math.random() * (endHour - startHour) | 0;
-    date.setHours(hour);
+	date.setHours(hour);
     return date;
 }
 
@@ -240,8 +240,8 @@ var config = {
         },
         scales: {
             xAxes: [{
-                type: "time",
-                time: {
+                type: "unixTime",
+                unixTime: {
                     format: timeFormat,
                     tooltipFormat: timeFormat
                 },
@@ -306,7 +306,7 @@ for (var key in sortedarray) {
     var i;
     for (i = 0; i < sortedarray[key].length; i++) {
         datasetdata.data.push({
-            x: moment(sortedarray[key][i].date).format(timeFormat),
+            x: moment(sortedarray[key][i].unixTime).format(timeFormat),
             y: sortedarray[key][i].value
         });
     }

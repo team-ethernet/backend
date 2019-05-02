@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import teamethernet.web.NoiseData;
-import teamethernet.web.NoiseDataRepository;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -54,7 +52,7 @@ public class MqttSubscriber implements MqttCallback {
         JsonNode jsonNode = new ObjectMapper().readTree(message.toString());
         final String name = jsonNode.get("n").asText();
         final String unit = jsonNode.get("u").asText();
-        final int value = jsonNode.get("v").intValue();
+        final float value = jsonNode.get("v").floatValue();
 
         return new NoiseData(name, unit, value);
     }
