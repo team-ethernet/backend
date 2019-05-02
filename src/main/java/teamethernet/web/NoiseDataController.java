@@ -48,7 +48,7 @@ public class NoiseDataController {
     List<NoiseDataDTO> getData(@RequestParam(name = "ids", required = false, defaultValue = "0") List<String> ids,
                                 @RequestParam(name = "startDate", required = false, defaultValue = "0")
                                         long startDate,
-                                @RequestParam(name = "endDate", required = false, defaultValue = "999999999999")
+                                @RequestParam(name = "endDate", required = false, defaultValue = "9999999999999")
                                 // TODO: change to today's date
                                         long endDate,
                                 @RequestParam(name = "minNoiseLevel", required = false, defaultValue = "0")
