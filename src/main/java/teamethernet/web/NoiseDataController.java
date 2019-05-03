@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import teamethernet.api.API;
+import teamethernet.api.WebAPI;
 import teamethernet.database.NoiseData;
 import teamethernet.database.NoiseDataRepository;
 
@@ -68,11 +68,11 @@ public class NoiseDataController {
                 maxNoiseLevel,
                 startDate,
                 endDate,
-                API.getSort(sortBy, sortOrder)
+                WebAPI.getSort(sortBy, sortOrder)
         );
 
         if(average){
-            noiseData = API.getAverageNoiseData(noiseData, endDate);
+            noiseData = WebAPI.getAverageNoiseData(noiseData, endDate);
         }
 
         final List<NoiseDataDTO> noiseDataDTOs = new ArrayList<>();

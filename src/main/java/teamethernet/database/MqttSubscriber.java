@@ -48,6 +48,7 @@ public class MqttSubscriber implements MqttCallback {
     }
 
     private List<NoiseData> convertSenMLToNoiseData (final MqttMessage message) throws IOException {
+        // TODO: Change this line tp use SenMLAPI.convertCBORToJSON(string)
         JsonNode jsonNodes = new ObjectMapper().readTree(message.toString());
 
         final List<NoiseData> noiseData = new ArrayList<>();

@@ -6,7 +6,7 @@ import teamethernet.database.NoiseData;
 
 import java.util.*;
 
-public interface API {
+public interface WebAPI {
 
     static Iterable<NoiseData> getAverageNoiseData(final Iterable<NoiseData> noiseData, long unixTime) {
         final long today = new Date().getTime();

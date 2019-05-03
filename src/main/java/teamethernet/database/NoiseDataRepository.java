@@ -21,7 +21,4 @@ public interface NoiseDataRepository extends JpaRepository<NoiseData, Integer> {
                                     @Param("endDate") long endDate,
                                     Sort sort);
 
-
-
-
 }
