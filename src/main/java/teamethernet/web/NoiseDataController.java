@@ -1,11 +1,7 @@
 package teamethernet.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import teamethernet.api.WebAPI;
 import teamethernet.database.NoiseData;
 import teamethernet.database.NoiseDataRepository;
@@ -13,36 +9,13 @@ import teamethernet.database.NoiseDataRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 public class NoiseDataController {
 
     @Autowired
     NoiseDataRepository noiseDataRepository;
 
-    @GetMapping(path = "/")
-    public String getStartPage() {
-        return "index";
-    }
-
-    @GetMapping(path = "/api")
-    public String getAPIPage() {
-        return "API";
-    }
-
-    @GetMapping(path = "/visualization")
-    public String getVisualization(Model model) {
-        List<NoiseData> noiseData = getNoiseData();
-        model.addAttribute("NoiseData", noiseData);
-        return "visual";
-    }
-
-    private List<NoiseData> getNoiseData() {
-        List<NoiseData> noiseData = new ArrayList<>();
-        noiseDataRepository.findAll().addAll(noiseData);
-
-        return noiseData;
-    }
-
+    @CrossOrigin(origins = "*")
     @GetMapping(path = "/data", produces = {"application/json"})
     public @ResponseBody
     List<NoiseDataDTO> getData(@RequestParam(name = "ids", required = false, defaultValue = "0") List<String> ids,
