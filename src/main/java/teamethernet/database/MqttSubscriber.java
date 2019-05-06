@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import teamethernet.api.SenMLAPI;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ public class MqttSubscriber implements MqttCallback {
     @Autowired
     private NoiseDataRepository noiseDataRepository;
 
-    //@PostConstruct
+    @PostConstruct
     public void connect() {
         try {
             client = new MqttClient("tcp://130.229.142.52:1883", "dbSub" + UUID.randomUUID());
