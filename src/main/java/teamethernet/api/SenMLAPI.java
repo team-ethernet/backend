@@ -6,24 +6,24 @@ import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 
 import java.io.IOException;
 
-public interface SenMLAPI {
+public abstract class SenMLAPI {
 
-    static JsonNode convertCBORToJSON(final String hex) throws IOException {
-        final ObjectMapper mapper = new ObjectMapper(new CBORFactory());
+    private static final ObjectMapper mapper = new ObjectMapper(new CBORFactory());
 
+    public static JsonNode convertCBORToJSON(final String hex) throws IOException {
         final byte[] cborData = hexStringToByteArray(hex);
-        final JsonNode jsonNode = mapper.readValue(cborData, JsonNode.class);
 
-        return jsonNode;
+        return mapper.readValue(cborData, JsonNode.class);
     }
 
-    static byte[] hexStringToByteArray(final String hex) {
-        final int length = hex.length();
-        final byte[] data = new byte[length / 2];
+    private static byte[] hexStringToByteArray(final String hex) {
+        final byte[] data = new byte[hex.length() / 2];
 
-        for (int i = 0; i < length; i += 2) {
-            data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
-                    + Character.digit(hex.charAt(i + 1), 16));
+        for (int i = 0; i < data.length; i++) {
+            final int index = i * 2;
+
+            final int hexAtIndex = Integer.parseInt(hex.substring(index, index + 2), 16);
+            data[i] = (byte) hexAtIndex;
         }
 
         return data;

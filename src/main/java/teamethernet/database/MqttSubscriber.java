@@ -1,12 +1,11 @@
 package teamethernet.database;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import teamethernet.api.SenMLAPI;
 
-import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +18,13 @@ public class MqttSubscriber implements MqttCallback {
     @Autowired
     private NoiseDataRepository noiseDataRepository;
 
-    @PostConstruct
+    //@PostConstruct
     public void connect() {
         try {
-            client = new MqttClient("tcp://130.229.180.105:1883", "dbSub" + UUID.randomUUID());
+            client = new MqttClient("tcp://130.229.142.52:1883", "dbSub" + UUID.randomUUID());
             client.connect();
             client.setCallback(this);
-            client.subscribe("noisesensor/+/sensors");
+            client.subscribe("#");
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -48,14 +47,13 @@ public class MqttSubscriber implements MqttCallback {
     }
 
     private List<NoiseData> convertSenMLToNoiseData (final MqttMessage message) throws IOException {
-        // TODO: Change this line tp use SenMLAPI.convertCBORToJSON(string)
-        JsonNode jsonNodes = new ObjectMapper().readTree(message.toString());
+        final JsonNode jsonNodes = SenMLAPI.convertCBORToJSON(message.toString());
 
         final List<NoiseData> noiseData = new ArrayList<>();
-        for (JsonNode jsonNode : jsonNodes) {
-            final String name = jsonNode.get("bn").asText();
-            final String unit = jsonNode.get("u").asText();
-            final float value = jsonNode.get("v").floatValue();
+        for (final JsonNode jsonNode : jsonNodes) {
+            final String name = jsonNode.get("-2").asText(); //bn
+            final String unit = jsonNode.get("1").asText(); //u
+            final float value = jsonNode.get("2").floatValue(); //v
 
             noiseData.add(new NoiseData(name, unit, value));
         }

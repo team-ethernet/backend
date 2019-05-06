@@ -1,24 +1,47 @@
 package teamethernet.database;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import teamethernet.api.NoiseDataDTO;
+import teamethernet.api.TimelessNoiseDataDTO;
+
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@SqlResultSetMapping(name = "NoiseDataDTO", classes = {
+        @ConstructorResult(targetClass = NoiseDataDTO.class,
+                columns = {
+                        @ColumnResult(name = "bn"),
+                        @ColumnResult(name = "u"),
+                        @ColumnResult(name = "v", type = Float.class),
+                        @ColumnResult(name = "t", type = Long.class),
+                })
+})
+@SqlResultSetMapping(name = "TimelessNoiseDataDTO", classes = {
+        @ConstructorResult(targetClass = TimelessNoiseDataDTO.class,
+                columns = {
+                        @ColumnResult(name = "bn"),
+                        @ColumnResult(name = "u"),
+                        @ColumnResult(name = "v", type = Double.class),
+                })
+})
+@Table(name = "noise_data")
 public class NoiseData {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue
+    @Column(name = "id")
+    private long id;
 
-    private String name;
+    @Column(name = "bn")
+    private String bn;
 
-    private String unit;
+    @Column(name = "u")
+    private String u;
 
-    private float value;
+    @Column(name = "v")
+    private float v;
 
-    private long unixTime = new Date().getTime();
+    @Column(name = "t")
+    private long t = new Date().getTime();
 
     public NoiseData() {
     }
@@ -27,7 +50,7 @@ public class NoiseData {
         setName(name);
         setUnit(unit);
         setValue(value);
-        setUnixTime((unixTime / 1000) * 1000);
+        setUnixTime((t / 1000) * 1000);
     }
 
     public NoiseData(final String name, final String unit, final float value, final long unixTime) {
@@ -38,35 +61,35 @@ public class NoiseData {
     }
 
     public String getName() {
-        return name;
+        return bn;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.bn = name;
     }
 
     public String getUnit() {
-        return unit;
+        return u;
     }
 
     public void setUnit(final String unit) {
-        this.unit = unit;
+        this.u = unit;
     }
 
     public float getValue() {
-        return value;
+        return v;
     }
 
     public void setValue(final float value) {
-        this.value = value;
+        this.v = value;
     }
 
     public long getUnixTime() {
-        return unixTime;
+        return t;
     }
 
     public void setUnixTime(final long unixTime) {
-        this.unixTime = unixTime;
+        this.t = unixTime;
     }
 
 }

@@ -7,13 +7,13 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@ComponentScan(basePackages={"teamethernet.spring", "teamethernet.web", "teamethernet.api", "teamethernet.database"})
-@EntityScan(basePackages={"teamethernet.database"})
-@EnableJpaRepositories("teamethernet.database")
+@ComponentScan(basePackages = {"teamethernet.api", "teamethernet.database"})
+@EntityScan(basePackages = {"teamethernet.database"})
+@EnableJpaRepositories(basePackages = {"teamethernet.api", "teamethernet.database"})
 public class WebPageApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(WebPageApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(WebPageApplication.class, args);
+    }
 
 }

@@ -1,7 +1,6 @@
-package teamethernet.web;
+package teamethernet.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import teamethernet.database.NoiseData;
 
 public class NoiseDataDTO {
     @JsonProperty("bn")
@@ -16,15 +15,15 @@ public class NoiseDataDTO {
     @JsonProperty("t")
     private long unixTime;
 
-    public static NoiseDataDTO fromEntity(NoiseData noiseData){
-        final NoiseDataDTO noiseDataDTO = new NoiseDataDTO();
+    public NoiseDataDTO() {
 
-        noiseDataDTO.setName(noiseData.getName());
-        noiseDataDTO.setUnit(noiseData.getUnit());
-        noiseDataDTO.setValue(noiseData.getValue());
-        noiseDataDTO.setUnixTime(noiseData.getUnixTime());
+    }
 
-        return noiseDataDTO;
+    public NoiseDataDTO(final String name, final String unit, final float value, final long unixTime) {
+        setName(name);
+        setUnit(unit);
+        setValue(value);
+        setUnixTime(unixTime);
     }
 
     public String getName() {
