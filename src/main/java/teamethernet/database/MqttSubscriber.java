@@ -1,10 +1,10 @@
 package teamethernet.database;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import teamethernet.api.SenMLAPI;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -48,13 +48,13 @@ public class MqttSubscriber implements MqttCallback {
     }
 
     private List<NoiseData> convertSenMLToNoiseData (final MqttMessage message) throws IOException {
-        final JsonNode jsonNodes = SenMLAPI.convertCBORToJSON(message.toString());
+        final JsonNode jsonNodes = new ObjectMapper().readTree(message.toString()); //SenMLAPI.convertCBORToJSON(message.toString());
 
         final List<NoiseData> noiseData = new ArrayList<>();
         for (final JsonNode jsonNode : jsonNodes) {
-            final String name = jsonNode.get("-2").asText(); //bn
-            final String unit = jsonNode.get("1").asText(); //u
-            final float value = jsonNode.get("2").floatValue(); //v
+            final String name = jsonNode.get("bn").asText(); //bn = -2
+            final String unit = jsonNode.get("u").asText(); //u = 1
+            final float value = jsonNode.get("v").floatValue(); //v = 2
 
             noiseData.add(new NoiseData(name, unit, value));
         }
