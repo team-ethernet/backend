@@ -21,7 +21,7 @@ $mvn spring-boot:run
 ```
 ### Linux
 ```
-$spring-boot-starter-parent
+$sudo apt-get install maven
 $mvn spring-boot:run
 ```
 5. The program is now running on localhost:8080
