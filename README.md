@@ -11,8 +11,9 @@ Repository for the server
 3. Change the first line of application.propeties in "team-ethernet.web\src\main\resources\" to spring.jpa.hibernate.ddl-auto=create
 4. Run the program (make sure you are in the team-ethernet.web folder)
 ### Windows
-4. Run the program in cmd  with the command: mvnw spring-boot:run
-```$mvnw spring-boot:run```
+```
+$mvnw spring-boot:run
+```
 ### MAC
 ```
 $brew install maven
