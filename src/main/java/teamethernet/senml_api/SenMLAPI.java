@@ -1,4 +1,4 @@
-package teamethernet.api;
+package teamethernet.senml_api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

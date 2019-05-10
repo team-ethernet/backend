@@ -1,4 +1,4 @@
-package teamethernet.api;
+package teamethernet.web_api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

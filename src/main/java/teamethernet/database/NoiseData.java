@@ -1,7 +1,7 @@
 package teamethernet.database;
 
-import teamethernet.api.NoiseDataDTO;
-import teamethernet.api.TimelessNoiseDataDTO;
+import teamethernet.web_api.NoiseDataDTO;
+import teamethernet.web_api.TimelessNoiseDataDTO;
 
 import javax.persistence.*;
 import java.util.Date;
