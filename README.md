@@ -11,7 +11,7 @@ Repository for the server
 3. Change the first line of application.propeties in "team-ethernet.web\src\main\resources\" to `spring.jpa.hibernate.ddl-auto=create`
 4. Build the application according to the build instructions below (make sure you are in the team-ethernet.web folder)
 5. The program is now running on localhost:8080
-6. After the first build change the first line of application.propeties back to spring.jpa.hibernate.ddl-auto=none
+6. After the first build, change the first line of application.propeties back to `spring.jpa.hibernate.ddl-auto=none`
 
 ## Build
 
