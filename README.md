@@ -30,11 +30,11 @@ $sudo apt-get install maven
 $mvn spring-boot:run
 ```
 ## Authors
-Anton Bothin  
-Erik Flink  
+Erik Flink    
+Isak Olsson   
 Nelly Friman  
-Jacob Klasmark  
-Valter Lundegårdh  
-Isak Olsson  
+Anton Bothin     
 Andreas Sjödin  
-Carina Wickström
+Jacob Klasmark    
+Carina Wickström  
+Valter Lundegårdh   
