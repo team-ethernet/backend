@@ -35,3 +35,34 @@ A selection of sensor data can be specified by typing a list of the following pa
 |**maxNoiseLevel**<br>Returns data where the noise level (v) is below maxNoiseLevel.</br>|`maxNoiseLevel=x`<br> </br>&nbsp;|200<br> </br>&nbsp;|
 |**limit**<br>The number of measurements to be returned</br>|`limit=x`<br> </br>|Unlimited<br> </br>|
 |**standardDeviationFilter**<br>Returns all data within the specified standard deviation</br>|`standardDeviationFilter=x`<br> </br>|Unlimited<br> </br>|
+
+## Example usage
+
+```
+localhost:8080/data?minNoiseLevel=50&maxNoiseLevel=70&limit=10
+```
+
+Should show the 10 most recent records where the noise level is between 50 and 70 dB.
+
+```
+localhost:8080/data/min?ids=1,2
+```
+
+Should show the lowest measurement for the sensors with id 1 and 2.
+
+## Code structure
+
+The sql queries that are run are definied in `WebAPI.java`.     
+These are called from `NoiseDataController.java` which also handles the mapping to `/data`.     
+`NoiseDataDTO.java` and `TimelessNoiseDataDTO.java` maps the database rows to JSON objects.     
+
+## Authors
+
+Erik Flink    
+Isak Olsson   
+Nelly Friman  
+Anton Bothin     
+Andreas Sjödin  
+Jacob Klasmark    
+Carina Wickström  
+Valter Lundegårdh   
