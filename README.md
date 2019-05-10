@@ -32,16 +32,10 @@ $mvn spring-boot:run
 ## Authors
 Anton Bothin
 
-Erik Flink
-
-Nelly Friman
-
-Jacob Klasmark
-
-Valter Lundegårdh
-
-Isak Olsson
-
-Andreas Sjödin
-
+Erik Flink  
+Nelly Friman  
+Jacob Klasmark  
+Valter Lundegårdh  
+Isak Olsson  
+Andreas Sjödin  
 Carina Wickström
