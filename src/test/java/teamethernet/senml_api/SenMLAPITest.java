@@ -127,6 +127,35 @@ public class SenMLAPITest {
  		assertEquals(labels2expected, labels2);
     }
 
+    @Test
+    public void json_add_and_get_value() throws JsonProcessingException, IOException {
+		final SenMLAPI senMLAPI = SenMLAPI.initJsonDecode("");
+		senMLAPI.addRecord(new Pair<>(Label.VALUE, 30.00),new Pair<>(Label.BASE_NAME, "hello1"));
+		senMLAPI.addRecord(new Pair<>(Label.VALUE, 20.00),new Pair<>(Label.BASE_NAME, "hello2"));
+		double v1 = senMLAPI.getRecord(Label.VALUE, 0);
+		double v2 = senMLAPI.getRecord(Label.VALUE, 1);
+		String bn1 = senMLAPI.getRecord(Label.BASE_NAME, 0);
+		String bn2 = senMLAPI.getRecord(Label.BASE_NAME, 1);
+		assertEquals(30.0, v1);
+		assertEquals(20.0, v2);
+		assertEquals("hello1", bn1);
+		assertEquals("hello2", bn2);
+	}
 
+    @Test
+    public void cbor_decode() throws JsonProcessingException, IOException {
+		final SenMLAPI senMLAPI = SenMLAPI.initCborDecode("81BF62626E766D61633A75726E3A6465763A333239303332393033326176FB403E000000000000627662F46175626442FF".getBytes());
+		String bn = senMLAPI.getRecord(Label.BASE_NAME, 0);
+		boolean vb = senMLAPI.getRecord(Label.BOOLEAN_VALUE, 0);
+		assertEquals("mac:urn:dev:3290329032", bn);
+		assertEquals(false, vb);
+	}
+
+    @Test
+    public void cbor_decode() throws JsonProcessingException, IOException {
+		final SenMLAPI senMLAPI = SenMLAPI.initCborDecode("82BF62626E766D61633A75726E3A6465763A33323930333239303332646276657200FFBF62626E756D61633A75726E3A6465763A3332393033323934326276736568656C6C6F627574FB403E000000000000FF".getBytes());
+		String bn = senMLAPI.getRecord(Label.BASE_NAME, 1);
+		assertEquals("mac:urn:dev:329032942", bn);
+	}
 
 }
