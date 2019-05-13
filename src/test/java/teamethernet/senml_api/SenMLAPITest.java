@@ -82,7 +82,7 @@ public class SenMLAPITest {
 
 	/* DECODE JSON */
 
-    @Test
+    /*@Test
     public void json_decode_small() throws JsonProcessingException, IOException {
 		String inputjson = "[{\"bn\": \"mac:urn:dev:3290\", \"v\":30.0, \"vb\": false}]";
 		final SenMLAPI senMLAPI = SenMLAPI.initJsonDecode(inputjson);
@@ -126,7 +126,7 @@ public class SenMLAPITest {
  		assertEquals(labels1expected, labels1);
  		assertEquals(labels2expected, labels2);
     }
-
+*/
 
 
 }

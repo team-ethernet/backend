@@ -47,7 +47,7 @@ class SenMLAPI<T extends Formatter> {
         final JsonNode record = formatter.getRecords().get(0).get(recordIndex);
         final List<Label> labels = new ArrayList<>();
 
-        record.fields().forEachRemaining(field -> labels.add(Label.getLabelFromName(field.getKey())));
+        record.fields().forEachRemaining(field -> labels.add(Label.NAME_TO_VALUE_MAP.get(field.getKey())));
 
         return labels;
     }
