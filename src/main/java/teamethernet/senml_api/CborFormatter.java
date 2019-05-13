@@ -11,8 +11,22 @@ public class CborFormatter implements Formatter {
 
     private static final ObjectMapper MAPPER = new ObjectMapper(new CBORFactory());
 
+    private final JsonNode RECORDS;
+
+    public CborFormatter() {
+        RECORDS = MAPPER.createArrayNode();
+    }
+
+    public CborFormatter(final byte[] cborData) throws IOException {
+        RECORDS = MAPPER.readValue(cborData, JsonNode.class);
+    }
+
     public ObjectMapper getMapper() {
         return MAPPER;
+    }
+
+    public JsonNode getRecords() {
+        return RECORDS;
     }
 
     public String endSenML(final JsonNode rootNode) throws JsonProcessingException, IOException {

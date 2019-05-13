@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 class SenMLAPI<T extends Formatter> {
 
@@ -16,12 +18,9 @@ class SenMLAPI<T extends Formatter> {
     private static final Boolean BOOLEAN_INSTANCE = false;
 
     private final T formatter;
-    private final JsonNode rootNode;
 
-    private SenMLAPI(T formatter) {
+    private SenMLAPI(final T formatter) {
         this.formatter = formatter;
-
-        rootNode = formatter.getMapper().createArrayNode();
     }
 
     static SenMLAPI<JsonFormatter> initJsonEncode() {
@@ -30,6 +29,27 @@ class SenMLAPI<T extends Formatter> {
 
     static SenMLAPI<CborFormatter> initCborEncode() {
         return new SenMLAPI<>(new CborFormatter());
+    }
+
+    static SenMLAPI<JsonFormatter> initJsonDecode(final String buffer) throws IOException {
+        return new SenMLAPI<>(new JsonFormatter(buffer));
+    }
+
+    static SenMLAPI<CborFormatter> initCborDecode(final byte[] buffer) throws IOException {
+        return new SenMLAPI<>(new CborFormatter(buffer));
+    }
+
+    String getRecord(final int recordIndex) {
+        return formatter.getRecords().get(0).get(recordIndex).toString();
+    }
+
+    List<Label> getLabels(final int recordIndex) {
+        final JsonNode record = formatter.getRecords().get(0).get(recordIndex);
+        final List<Label> labels = new ArrayList<>();
+
+        record.fields().forEachRemaining(field -> labels.add(Label.getLabelFromName(field.getKey())));
+
+        return labels;
     }
 
     @SafeVarargs
@@ -53,11 +73,11 @@ class SenMLAPI<T extends Formatter> {
             }
         }
 
-        ((ArrayNode) rootNode).add(record);
+        ((ArrayNode) formatter.getRecords()).add(record);
     }
 
     String endSenML() throws JsonProcessingException, IOException {
-        return formatter.endSenML(rootNode);
+        return formatter.endSenML(formatter.getRecords());
     }
 
 }

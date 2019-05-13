@@ -2,6 +2,15 @@ package teamethernet.senml_api;
 
 public interface Label<T> {
 
+    static Label<?> getLabelFromName(final String name) {
+        switch (name) {
+            case "bn":
+                return BASE_NAME;
+            default:
+                throw new UnsupportedOperationException();
+        }
+    }
+
     Class<T> getClassType();
 
     Label<String> BASE_NAME = new Label<String>() {

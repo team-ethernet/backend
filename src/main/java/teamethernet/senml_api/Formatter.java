@@ -10,6 +10,8 @@ interface Formatter {
 
     ObjectMapper getMapper();
 
+    JsonNode getRecords();
+
     String endSenML(final JsonNode rootNode) throws JsonProcessingException, IOException;
 
 }
