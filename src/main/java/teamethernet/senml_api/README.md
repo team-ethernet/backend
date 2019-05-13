@@ -56,6 +56,8 @@ SenMLAPI#endSenML();
 ```
 
 ## Example usage
+
+### Encoding
 ```java
 SenMLAPI senMLAPI = SenMLAPI.initJsonEncode();
 senMLAPI.addRecord(new Pair<>(Label.BASE_NAME, "name"), new Pair<>(Label.BASE_UNIT, "unit"), new Pair<>(Label.VALUE, 4.6));
@@ -67,6 +69,19 @@ System.out.println(json);
 Should print
 ```json
 [{"bn":"name","bu":"unit","v":4.6},{"n":"current","u":"A","v":1.2}]
+```
+
+### Decoding
+```java
+String sampleJson = "[{\"bn\":\"mac:urn:dev:1234\", \"v\": 30.0}]";
+SenMLAPI senMLAPI = SenMLAPI.initJsonDecode("sampleJson");
+double v = senMLAPI.getRecord(Label.VALUE, 0);
+
+System.out.println(v);
+```
+Should print
+```
+30.0
 ```
 
 ## Code structure
