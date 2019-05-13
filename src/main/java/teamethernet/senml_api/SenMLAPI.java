@@ -1,6 +1,7 @@
 package teamethernet.senml_api;
 
 import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -45,11 +46,11 @@ public class SenMLAPI<T extends Formatter> {
             if (type.isInstance(STRING_INSTANCE)) {
                 ((ObjectNode) record).put(pair.getKey().toString(), (String) pair.getValue());
             } else if (type.isInstance(DOUBLE_INSTANCE)) {
-                ((ObjectNode) record).put(pair.getKey().toString(), (double) pair.getValue());
+                ((ObjectNode) record).put(pair.getKey().toString(), (Double) pair.getValue());
             } else if (type.isInstance(INTEGER_INSTANCE)) {
-                ((ObjectNode) record).put(pair.getKey().toString(), (int) pair.getValue());
+                ((ObjectNode) record).put(pair.getKey().toString(), (Integer) pair.getValue());
             } else if (type.isInstance(BOOLEAN_INSTANCE)) {
-                ((ObjectNode) record).put(pair.getKey().toString(), (boolean) pair.getValue());
+                ((ObjectNode) record).put(pair.getKey().toString(), (Boolean) pair.getValue());
             } else {
                 throw new UnsupportedOperationException(
                         type + " is not supported. Use String, Double, Integer or Boolean");
@@ -59,8 +60,8 @@ public class SenMLAPI<T extends Formatter> {
         ((ArrayNode) rootNode).add(record);
     }
 
-    public String endSenML() {
-        return rootNode.asText();
+    public String endSenML() throws JsonProcessingException {
+        return mapper.writeValueAsString(rootNode);
     }
 
     /*
