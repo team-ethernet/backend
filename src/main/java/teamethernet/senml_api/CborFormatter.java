@@ -18,6 +18,7 @@ public class CborFormatter implements Formatter {
 
     public CborFormatter(final byte[] cborData) throws IOException {
         RECORDS = MAPPER.readValue(cborData, JsonNode.class);
+        System.out.println();
     }
 
     public ObjectMapper getMapper() {
