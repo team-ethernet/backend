@@ -128,7 +128,7 @@ public class SenMLAPITest {
     }
 
     @Test
-    public void cbor_add_and_get_value() throws JsonProcessingException, IOException {
+    public void json_add_and_get_value() throws JsonProcessingException, IOException {
 		final SenMLAPI senMLAPI = SenMLAPI.initJsonDecode("");
 		senMLAPI.addRecord(new Pair<>(Label.VALUE, 30.00),new Pair<>(Label.BASE_NAME, "hello1"));
 		senMLAPI.addRecord(new Pair<>(Label.VALUE, 20.00),new Pair<>(Label.BASE_NAME, "hello2"));
