@@ -1,17 +1,14 @@
 package teamethernet.senml_api;
 
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
 import javafx.util.Pair;
 
 import java.io.IOException;
 
-public class SenMLAPI<T extends Formatter> {
+class SenMLAPI<T extends Formatter> {
 
     private static final String STRING_INSTANCE = "";
     private static final Double DOUBLE_INSTANCE = 0.0;
@@ -19,26 +16,25 @@ public class SenMLAPI<T extends Formatter> {
     private static final Boolean BOOLEAN_INSTANCE = false;
 
     private final T formatter;
-    private final ObjectMapper mapper;
     private final JsonNode rootNode;
 
-    private SenMLAPI(T formatter, ObjectMapper mapper) {
+    private SenMLAPI(T formatter) {
         this.formatter = formatter;
-        this.mapper = mapper;
 
-        rootNode = mapper.createArrayNode();
+        rootNode = formatter.getMapper().createArrayNode();
     }
 
-    public static SenMLAPI<JsonFormatter> initJsonEncode() {
-        return new SenMLAPI<>(new JsonFormatter(), new ObjectMapper(new JsonFactory()));
+    static SenMLAPI<JsonFormatter> initJsonEncode() {
+        return new SenMLAPI<>(new JsonFormatter());
     }
 
-    public static SenMLAPI<CborFormatter> initCborEncode() {
-        return new SenMLAPI<>(new CborFormatter(), new ObjectMapper(new CBORFactory()));
+    static SenMLAPI<CborFormatter> initCborEncode() {
+        return new SenMLAPI<>(new CborFormatter());
     }
 
-    public <S> void addRecord(final Pair<Label<S>, S>... pairs) {
-        final JsonNode record = mapper.createObjectNode();
+    @SafeVarargs
+    final <S> void addRecord(final Pair<Label<S>, S>... pairs) {
+        final JsonNode record = formatter.getMapper().createObjectNode();
 
         for (final Pair<Label<S>, S> pair : pairs) {
             Class<S> type = pair.getKey().getClassType();
@@ -60,31 +56,8 @@ public class SenMLAPI<T extends Formatter> {
         ((ArrayNode) rootNode).add(record);
     }
 
-    public String endSenML() throws JsonProcessingException {
-        return mapper.writeValueAsString(rootNode);
-    }
-
-    /*
-     * Old code
-     * ↓
-     * */
-
-    public JsonNode convertCBORToJSON(final String hex) throws IOException {
-        final byte[] cborData = hexStringToByteArray(hex);
-        return mapper.readValue(cborData, JsonNode.class);
-    }
-
-    private static byte[] hexStringToByteArray(final String hex) {
-        final byte[] data = new byte[hex.length() / 2];
-
-        for (int i = 0; i < data.length; i++) {
-            final int index = i * 2;
-
-            final int hexAtIndex = Integer.parseInt(hex.substring(index, index + 2), 16);
-            data[i] = (byte) hexAtIndex;
-        }
-
-        return data;
+    String endSenML() throws JsonProcessingException, IOException {
+        return formatter.endSenML(rootNode);
     }
 
 }

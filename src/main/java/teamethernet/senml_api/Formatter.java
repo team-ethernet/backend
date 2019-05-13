@@ -1,24 +1,15 @@
 package teamethernet.senml_api;
 
-public class Formatter {
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-    enum Label {
-        BASE_NAME,
-        BASE_TIME,
-        BASE_UNIT,
-        BASE_VALUE,
-        BASE_SUM,
-        BASE_VERSION,
-        NAME,
-        UNIT,
-        VALUE,
-        STRING_VALUE,
-        BOOLEAN_VALUE,
-        DATA_VALUE,
-        SUM,
-        TIME,
-        UPDATE_TIME//,
-        //CUSTOM
-    };
+import java.io.IOException;
+
+interface Formatter {
+
+    ObjectMapper getMapper();
+
+    String endSenML(final JsonNode rootNode) throws JsonProcessingException, IOException;
 
 }
