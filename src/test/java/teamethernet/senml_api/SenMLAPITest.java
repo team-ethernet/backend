@@ -128,7 +128,7 @@ public class SenMLAPITest {
     }
 
     @Test
-    public void json_add_and_get_value() throws JsonProcessingException, IOException {
+    public void cbor_add_and_get_value() throws JsonProcessingException, IOException {
 		final SenMLAPI senMLAPI = SenMLAPI.initJsonDecode("");
 		senMLAPI.addRecord(new Pair<>(Label.VALUE, 30.00),new Pair<>(Label.BASE_NAME, "hello1"));
 		senMLAPI.addRecord(new Pair<>(Label.VALUE, 20.00),new Pair<>(Label.BASE_NAME, "hello2"));
@@ -152,7 +152,7 @@ public class SenMLAPITest {
 	}
 
     @Test
-    public void cbor_decode() throws JsonProcessingException, IOException {
+    public void cbor_decode_multiple_records() throws JsonProcessingException, IOException {
 		final SenMLAPI senMLAPI = SenMLAPI.initCborDecode("82BF62626E766D61633A75726E3A6465763A33323930333239303332646276657200FFBF62626E756D61633A75726E3A6465763A3332393033323934326276736568656C6C6F627574FB403E000000000000FF".getBytes());
 		String bn = senMLAPI.getRecord(Label.BASE_NAME, 1);
 		assertEquals("mac:urn:dev:329032942", bn);
