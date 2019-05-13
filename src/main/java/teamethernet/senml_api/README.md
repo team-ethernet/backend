@@ -7,6 +7,8 @@ It handles the formatting of the SenML pack conforming to [RFC 8428](https://too
 ```java
 import teamethernet.senml_api.*;
 ``` 
+### Dependencies
+Jackson API for JSON and CBOR
 
 ## Use
 
