@@ -3,7 +3,7 @@ package teamethernet.senml_api;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SenMlAPITest {
+public class SenMLAPITest {
 
     @Before
     public void setUp() throws Exception {
