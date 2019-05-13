@@ -1,6 +1,5 @@
 package teamethernet.senml_api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -40,11 +39,11 @@ class SenMLAPI<T extends Formatter> {
     }
 
     String getRecord(final int recordIndex) {
-        return formatter.getRecords().get(0).get(recordIndex).toString();
+        return formatter.getRecords().get(recordIndex).toString();
     }
 
     List<Label> getLabels(final int recordIndex) {
-        final JsonNode record = formatter.getRecords().get(0).get(recordIndex);
+        final JsonNode record = formatter.getRecords().get(recordIndex);
         final List<Label> labels = new ArrayList<>();
 
         record.fields().forEachRemaining(field -> labels.add(Label.NAME_TO_VALUE_MAP.get(field.getKey())));
@@ -52,12 +51,31 @@ class SenMLAPI<T extends Formatter> {
         return labels;
     }
 
+    @SuppressWarnings("unchecked")
+    <S> S getValue(Label<S> label, int recordIndex) {
+        final Class<S> type = label.getClassType();
+        final JsonNode record = formatter.getRecords().get(recordIndex);
+
+        if (type.isInstance(STRING_INSTANCE)) {
+            return type.cast(formatter.getStringValue((Label<String>) label, record));
+        } else if (type.isInstance(DOUBLE_INSTANCE)) {
+            return type.cast(formatter.getDoubleValue((Label<Double>) label, record));
+        } else if (type.isInstance(INTEGER_INSTANCE)) {
+            return type.cast(formatter.getIntegerValue((Label<Integer>) label, record));
+        } else if (type.isInstance(BOOLEAN_INSTANCE)) {
+            return type.cast(formatter.getBooleanValue((Label<Boolean>) label, record));
+        } else {
+            throw new UnsupportedOperationException(
+                    type + " is not supported. Use String, Double, Integer or Boolean");
+        }
+    }
+
     @SafeVarargs
     final <S> void addRecord(final Pair<Label<S>, S>... pairs) {
         final JsonNode record = formatter.getMapper().createObjectNode();
 
         for (final Pair<Label<S>, S> pair : pairs) {
-            Class<S> type = pair.getKey().getClassType();
+            final Class<S> type = pair.getKey().getClassType();
 
             if (type.isInstance(STRING_INSTANCE)) {
                 ((ObjectNode) record).put(pair.getKey().toString(), (String) pair.getValue());
@@ -76,7 +94,7 @@ class SenMLAPI<T extends Formatter> {
         ((ArrayNode) formatter.getRecords()).add(record);
     }
 
-    String endSenML() throws JsonProcessingException, IOException {
+    String endSenML() throws IOException {
         return formatter.endSenML(formatter.getRecords());
     }
 

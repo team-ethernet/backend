@@ -29,6 +29,22 @@ public class JsonFormatter implements Formatter {
         return RECORDS;
     }
 
+    public String getStringValue(Label<String> label, JsonNode record) {
+        return record.get(label.toString()).asText();
+    }
+
+    public Integer getIntegerValue(Label<Integer> label, JsonNode record) {
+        return record.get(label.toString()).intValue();
+    }
+
+    public Double getDoubleValue(Label<Double> label, JsonNode record) {
+        return record.get(label.toString()).doubleValue();
+    }
+
+    public Boolean getBooleanValue(Label<Boolean> label, JsonNode record) {
+        return record.get(label.toString()).booleanValue();
+    }
+
     public String endSenML(final JsonNode rootNode) throws JsonProcessingException {
         return MAPPER.writeValueAsString(rootNode);
     }

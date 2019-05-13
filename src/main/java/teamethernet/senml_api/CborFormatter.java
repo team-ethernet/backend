@@ -1,6 +1,5 @@
 package teamethernet.senml_api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
@@ -29,7 +28,23 @@ public class CborFormatter implements Formatter {
         return RECORDS;
     }
 
-    public String endSenML(final JsonNode rootNode) throws JsonProcessingException, IOException {
+    public String getStringValue(Label<String> label, JsonNode record) {
+        return record.get(label.toString()).asText();
+    }
+
+    public Integer getIntegerValue(Label<Integer> label, JsonNode record) {
+        return record.get(label.toString()).intValue();
+    }
+
+    public Double getDoubleValue(Label<Double> label, JsonNode record) {
+        return record.get(label.toString()).doubleValue();
+    }
+
+    public Boolean getBooleanValue(Label<Boolean> label, JsonNode record) {
+        return record.get(label.toString()).booleanValue();
+    }
+
+    public String endSenML(final JsonNode rootNode) throws IOException {
         final byte[] bytes = MAPPER.writeValueAsBytes(rootNode);
 
         final StringBuilder stringBuilder = new StringBuilder();
