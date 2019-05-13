@@ -1,32 +1,63 @@
 package teamethernet.senml_api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.cbor.CBORFactory;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import javafx.util.Pair;
 
 import java.io.IOException;
 
-public abstract class SenMLAPI {
+class SenMLAPI<T extends Formatter> {
 
-    private static final ObjectMapper mapper = new ObjectMapper(new CBORFactory());
+    private static final String STRING_INSTANCE = "";
+    private static final Double DOUBLE_INSTANCE = 0.0;
+    private static final Integer INTEGER_INSTANCE = 0;
+    private static final Boolean BOOLEAN_INSTANCE = false;
 
-    public static JsonNode convertCBORToJSON(final String hex) throws IOException {
-        final byte[] cborData = hexStringToByteArray(hex);
+    private final T formatter;
+    private final JsonNode rootNode;
 
-        return mapper.readValue(cborData, JsonNode.class);
+    private SenMLAPI(T formatter) {
+        this.formatter = formatter;
+
+        rootNode = formatter.getMapper().createArrayNode();
     }
 
-    private static byte[] hexStringToByteArray(final String hex) {
-        final byte[] data = new byte[hex.length() / 2];
+    static SenMLAPI<JsonFormatter> initJsonEncode() {
+        return new SenMLAPI<>(new JsonFormatter());
+    }
 
-        for (int i = 0; i < data.length; i++) {
-            final int index = i * 2;
+    static SenMLAPI<CborFormatter> initCborEncode() {
+        return new SenMLAPI<>(new CborFormatter());
+    }
 
-            final int hexAtIndex = Integer.parseInt(hex.substring(index, index + 2), 16);
-            data[i] = (byte) hexAtIndex;
+    @SafeVarargs
+    final <S> void addRecord(final Pair<Label<S>, S>... pairs) {
+        final JsonNode record = formatter.getMapper().createObjectNode();
+
+        for (final Pair<Label<S>, S> pair : pairs) {
+            Class<S> type = pair.getKey().getClassType();
+
+            if (type.isInstance(STRING_INSTANCE)) {
+                ((ObjectNode) record).put(pair.getKey().toString(), (String) pair.getValue());
+            } else if (type.isInstance(DOUBLE_INSTANCE)) {
+                ((ObjectNode) record).put(pair.getKey().toString(), (Double) pair.getValue());
+            } else if (type.isInstance(INTEGER_INSTANCE)) {
+                ((ObjectNode) record).put(pair.getKey().toString(), (Integer) pair.getValue());
+            } else if (type.isInstance(BOOLEAN_INSTANCE)) {
+                ((ObjectNode) record).put(pair.getKey().toString(), (Boolean) pair.getValue());
+            } else {
+                throw new UnsupportedOperationException(
+                        type + " is not supported. Use String, Double, Integer or Boolean");
+            }
         }
 
-        return data;
+        ((ArrayNode) rootNode).add(record);
+    }
+
+    String endSenML() throws JsonProcessingException, IOException {
+        return formatter.endSenML(rootNode);
     }
 
 }
