@@ -37,8 +37,8 @@ class SenMLAPI<T extends Formatter> {
         return new SenMLAPI<>(new CborFormatter(buffer));
     }
 
-    String getRecord(final int recordIndex) {
-        return formatter.getRecords().get(recordIndex).toString();
+    String getRecord(final int recordIndex) throws IOException {
+        return formatter.getSenML(formatter.getRecords().get(recordIndex));
     }
 
     List<Label> getLabels(final int recordIndex) {
@@ -93,7 +93,7 @@ class SenMLAPI<T extends Formatter> {
     }
 
     String getSenML() throws IOException {
-        return formatter.endSenML(formatter.getRecords());
+        return formatter.getSenML(formatter.getRecords());
     }
 
 }

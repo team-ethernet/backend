@@ -45,7 +45,7 @@ public class JsonFormatter implements Formatter {
         return record.get(label.toString()).booleanValue();
     }
 
-    public String endSenML(final JsonNode rootNode) throws JsonProcessingException {
+    public String getSenML(final JsonNode rootNode) throws JsonProcessingException {
         return MAPPER.writeValueAsString(rootNode);
     }
 

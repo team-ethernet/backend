@@ -45,9 +45,13 @@ public class CborFormatter implements Formatter {
         return record.get(label.toString()).booleanValue();
     }
 
-    public String endSenML(final JsonNode rootNode) throws IOException {
+    public String getSenML(final JsonNode rootNode) throws IOException {
         final byte[] bytes = MAPPER.writeValueAsBytes(rootNode);
 
+        return byteArrayToHexString(bytes);
+    }
+
+    private String byteArrayToHexString (final byte[] bytes) {
         final StringBuilder stringBuilder = new StringBuilder();
         for (byte b : bytes) {
             stringBuilder.append(String.format("%02X", b));
