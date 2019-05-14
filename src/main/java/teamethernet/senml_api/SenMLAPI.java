@@ -3,7 +3,6 @@ package teamethernet.senml_api;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,21 +69,20 @@ class SenMLAPI<T extends Formatter> {
         }
     }
 
-    @SafeVarargs
-    final <S> void addRecord(final Pair<Label<S>, S>... pairs) {
+    final void addRecord(final Label.Pair ... pairs) {
         final JsonNode record = formatter.getMapper().createObjectNode();
 
-        for (final Pair<Label<S>, S> pair : pairs) {
-            final Class<S> type = pair.getKey().getClassType();
+        for (final Label.Pair pair : pairs) {
+            final Class<?> type = pair.getLabel().getClassType();
 
             if (type.isInstance(STRING_INSTANCE)) {
-                ((ObjectNode) record).put(pair.getKey().toString(), (String) pair.getValue());
+                ((ObjectNode) record).put(pair.getLabel().toString(), (String) pair.getValue());
             } else if (type.isInstance(DOUBLE_INSTANCE)) {
-                ((ObjectNode) record).put(pair.getKey().toString(), (Double) pair.getValue());
+                ((ObjectNode) record).put(pair.getLabel().toString(), (Double) pair.getValue());
             } else if (type.isInstance(INTEGER_INSTANCE)) {
-                ((ObjectNode) record).put(pair.getKey().toString(), (Integer) pair.getValue());
+                ((ObjectNode) record).put(pair.getLabel().toString(), (Integer) pair.getValue());
             } else if (type.isInstance(BOOLEAN_INSTANCE)) {
-                ((ObjectNode) record).put(pair.getKey().toString(), (Boolean) pair.getValue());
+                ((ObjectNode) record).put(pair.getLabel().toString(), (Boolean) pair.getValue());
             } else {
                 throw new UnsupportedOperationException(
                         type + " is not supported. Use String, Double, Integer or Boolean");
@@ -94,7 +92,7 @@ class SenMLAPI<T extends Formatter> {
         ((ArrayNode) formatter.getRecords()).add(record);
     }
 
-    String endSenML() throws IOException {
+    String getSenML() throws IOException {
         return formatter.endSenML(formatter.getRecords());
     }
 

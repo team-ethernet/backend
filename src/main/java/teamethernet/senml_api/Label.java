@@ -3,177 +3,61 @@ package teamethernet.senml_api;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface Label<T> {
+abstract class Label<T> {
 
-    Class<T> getClassType();
+    private final Class<T> type;
+    private final String stringRepresentation;
 
-    Label<String> BASE_NAME = new Label<String>() {
-        @Override
-        public Class<String> getClassType() {
-            return String.class;
-        }
+    private Label(final Class<T> type, final String stringRepresentation) {
+        this.type = type;
+        this.stringRepresentation = stringRepresentation;
+    }
 
-        @Override
-        public String toString() {
-            return "bn";
-        }
+    Class<T> getClassType() {
+        return type;
+    }
+
+    Pair attachValue(final T value) {
+        return new Pair(value);
+    }
+
+    @Override
+    public String toString() {
+        return stringRepresentation;
+    }
+
+    final static Label<String> BASE_NAME = new Label<String>(String.class, "bn") {
     };
-    Label<Double> BASE_TIME = new Label<Double>() {
-        @Override
-        public Class<Double> getClassType() {
-            return Double.class;
-        }
-
-        @Override
-        public String toString() {
-            return "bt";
-        }
+    final static Label<Double> BASE_TIME = new Label<Double>(Double.class, "bt") {
     };
-    Label<String> BASE_UNIT = new Label<String>() {
-        @Override
-        public Class<String> getClassType() {
-            return String.class;
-        }
-
-        @Override
-        public String toString() {
-            return "bu";
-        }
+    final static Label<String> BASE_UNIT = new Label<String>(String.class, "bu") {
     };
-    Label<Double> BASE_VALUE = new Label<Double>() {
-        @Override
-        public Class<Double> getClassType() {
-            return Double.class;
-        }
-
-        @Override
-        public String toString() {
-            return "bv";
-        }
+    final static Label<Double> BASE_VALUE = new Label<Double>(Double.class, "bv") {
     };
-    Label<Double> BASE_SUM = new Label<Double>() {
-        @Override
-        public Class<Double> getClassType() {
-            return Double.class;
-        }
-
-        @Override
-        public String toString() {
-            return "bs";
-        }
+    final static Label<Double> BASE_SUM = new Label<Double>(Double.class, "bs") {
     };
-    Label<Integer> BASE_VERSION = new Label<Integer>() {
-        @Override
-        public Class<Integer> getClassType() {
-            return Integer.class;
-        }
-
-        @Override
-        public String toString() {
-            return "bver";
-        }
+    final static Label<Integer> BASE_VERSION = new Label<Integer>(Integer.class, "bver") {
     };
-    Label<String> NAME = new Label<String>() {
-        @Override
-        public Class<String> getClassType() {
-            return String.class;
-        }
-
-        @Override
-        public String toString() {
-            return "n";
-        }
+    final static Label<String> NAME = new Label<String>(String.class, "n") {
     };
-    Label<String> UNIT = new Label<String>() {
-        @Override
-        public Class<String> getClassType() {
-            return String.class;
-        }
-
-        @Override
-        public String toString() {
-            return "u";
-        }
+    final static Label<String> UNIT = new Label<String>(String.class, "u") {
     };
-    Label<Double> VALUE = new Label<Double>() {
-        @Override
-        public Class<Double> getClassType() {
-            return Double.class;
-        }
-
-        @Override
-        public String toString() {
-            return "v";
-        }
+    final static Label<Double> VALUE = new Label<Double>(Double.class, "v") {
     };
-    Label<String> STRING_VALUE = new Label<String>() {
-        @Override
-        public Class<String> getClassType() {
-            return String.class;
-        }
-
-        @Override
-        public String toString() {
-            return "vs";
-        }
+    final static Label<String> STRING_VALUE = new Label<String>(String.class, "vs") {
     };
-    Label<Boolean> BOOLEAN_VALUE = new Label<Boolean>() {
-        @Override
-        public Class<Boolean> getClassType() {
-            return Boolean.class;
-        }
-
-        @Override
-        public String toString() {
-            return "vb";
-        }
+    final static Label<Boolean> BOOLEAN_VALUE = new Label<Boolean>(Boolean.class, "vb") {
     };
-    Label<String> DATA_VALUE = new Label<String>() {
-        @Override
-        public Class<String> getClassType() {
-            return String.class;
-        }
-
-        @Override
-        public String toString() {
-            return "vd";
-        }
+    final static Label<String> DATA_VALUE = new Label<String>(String.class, "vd") {
     };
-    Label<Double> SUM = new Label<Double>() {
-        @Override
-        public Class<Double> getClassType() {
-            return Double.class;
-        }
-
-        @Override
-        public String toString() {
-            return "s";
-        }
+    final static Label<Double> SUM = new Label<Double>(Double.class, "s") {
     };
-    Label<Double> TIME = new Label<Double>() {
-        @Override
-        public Class<Double> getClassType() {
-            return Double.class;
-        }
-
-        @Override
-        public String toString() {
-            return "t";
-        }
+    final static Label<Double> TIME = new Label<Double>(Double.class, "t") {
     };
-    Label<Double> UPDATE_TIME = new Label<Double>() {
-        @Override
-        public Class<Double> getClassType() {
-            return Double.class;
-        }
-
-        @Override
-        public String toString() {
-            return "ut";
-        }
+    final static Label<Double> UPDATE_TIME = new Label<Double>(Double.class, "ut") {
     };
 
-    Map<String, Label> NAME_TO_VALUE_MAP = new HashMap<String, Label>() {{
+    final static Map<String, Label> NAME_TO_VALUE_MAP = new HashMap<String, Label>() {{
         put(BASE_NAME.toString(), BASE_NAME);
         put(BASE_TIME.toString(), BASE_TIME);
         put(BASE_UNIT.toString(), BASE_UNIT);
@@ -190,5 +74,23 @@ public interface Label<T> {
         put(TIME.toString(), TIME);
         put(UPDATE_TIME.toString(), UPDATE_TIME);
     }};
+
+    public class Pair {
+
+        private T value;
+
+        private Pair(final T value) {
+            this.value = value;
+        }
+
+        Label<T> getLabel() {
+            return Label.this;
+        }
+
+        public T getValue() {
+            return value;
+        }
+
+    }
 
 }

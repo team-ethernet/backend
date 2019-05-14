@@ -75,6 +75,12 @@
             <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
             <version>1.2.1</version>
         </dependency>
+		<dependency>
+			<groupId>de.bechte.junit</groupId>
+			<artifactId>junit-hierarchicalcontextrunner</artifactId>
+			<version>4.11.1</version>
+			<scope>test</scope>
+		</dependency>
     </dependencies>
 
 	<build>
