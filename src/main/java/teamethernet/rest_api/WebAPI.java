@@ -1,4 +1,4 @@
-package teamethernet.web_api;
+package teamethernet.rest_api;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
