@@ -38,7 +38,7 @@ public class NoiseData {
     private String u;
 
     @Column(name = "v")
-    private float v;
+    private double v;
 
     @Column(name = "t")
     private long t = new Date().getTime();
@@ -46,14 +46,14 @@ public class NoiseData {
     public NoiseData() {
     }
 
-    public NoiseData(final String name, final String unit, final float value) {
+    public NoiseData(final String name, final String unit, final double value) {
         setName(name);
         setUnit(unit);
         setValue(value);
         setUnixTime((t / 1000) * 1000);
     }
 
-    public NoiseData(final String name, final String unit, final float value, final long unixTime) {
+    public NoiseData(final String name, final String unit, final double value, final long unixTime) {
         setName(name);
         setUnit(unit);
         setValue(value);
@@ -76,11 +76,11 @@ public class NoiseData {
         this.u = unit;
     }
 
-    public float getValue() {
+    public double getValue() {
         return v;
     }
 
-    public void setValue(final float value) {
+    public void setValue(final double value) {
         this.v = value;
     }
 
