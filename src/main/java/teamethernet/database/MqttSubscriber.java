@@ -1,10 +1,11 @@
 package teamethernet.database;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import teamethernet.senmlapi.CborFormatter;
+import teamethernet.senmlapi.Label;
+import teamethernet.senmlapi.SenMLAPI;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -48,13 +49,13 @@ public class MqttSubscriber implements MqttCallback {
     }
 
     private List<NoiseData> convertSenMLToNoiseData (final MqttMessage message) throws IOException {
-        final JsonNode jsonNodes = new ObjectMapper().readTree(message.toString()); //SenMLAPI.convertCBORToJSON(message.toString());
+        final SenMLAPI<CborFormatter> senMLAPI = SenMLAPI.initCborDecode(message.getPayload());
 
         final List<NoiseData> noiseData = new ArrayList<>();
-        for (final JsonNode jsonNode : jsonNodes) {
-            final String name = jsonNode.get("bn").asText(); //bn = -2
-            final String unit = jsonNode.get("u").asText(); //u = 1
-            final float value = jsonNode.get("v").floatValue(); //v = 2
+        for (int i = 0; i < senMLAPI.getRecords().size(); i++) {
+            final String name = senMLAPI.getValue(Label.BASE_NAME, i);
+            final String unit = senMLAPI.getValue(Label.UNIT, i);
+            final double value = senMLAPI.getValue(Label.VALUE, i);
 
             noiseData.add(new NoiseData(name, unit, value));
         }
