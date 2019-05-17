@@ -21,12 +21,25 @@ public class MqttSubscriber implements MqttCallback {
     private NoiseDataRepository noiseDataRepository;
 
     @PostConstruct
-    public void connect() {
+    private void init() {
+        ClassPathResource resource = new ClassPathResource("mqtt.properties");
+        Properties p = new Properties();
+        InputStream inputStream = null;
         try {
-            client = new MqttClient("tcp://130.229.142.52:1883", "dbSub" + UUID.randomUUID());
+            inputStream = resource.getInputStream();
+            p.load(inputStream);
+            connect(p.getProperty("mqtt.ip"), p.getProperty("mqtt.port"), p.getProperty("mqtt.topic"));
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    public void connect(String ip, String port, String topic) {
+        try {
+            client = new MqttClient("tcp://" + ip + ":" + port, "dbSub" + UUID.randomUUID());
             client.connect();
             client.setCallback(this);
-            client.subscribe("#");
+            client.subscribe(topic);
         } catch (MqttException e) {
             e.printStackTrace();
         }
