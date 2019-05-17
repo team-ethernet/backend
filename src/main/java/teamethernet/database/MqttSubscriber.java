@@ -2,6 +2,7 @@ package teamethernet.database;
 
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import teamethernet.senmlapi.CborFormatter;
 import teamethernet.senmlapi.Label;
@@ -9,8 +10,10 @@ import teamethernet.senmlapi.SenMLAPI;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 
 @Service
@@ -62,7 +65,7 @@ public class MqttSubscriber implements MqttCallback {
     }
 
     private List<NoiseData> convertSenMLToNoiseData (final MqttMessage message) throws IOException {
-        final SenMLAPI<CborFormatter> senMLAPI = SenMLAPI.initCborDecode(message.getPayload());
+        final SenMLAPI<CborFormatter> senMLAPI = SenMLAPI.initCbor(message.getPayload());
 
         final List<NoiseData> noiseData = new ArrayList<>();
         for (int i = 0; i < senMLAPI.getRecords().size(); i++) {
