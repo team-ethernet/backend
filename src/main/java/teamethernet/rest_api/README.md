@@ -52,7 +52,7 @@ Should show the lowest measurement for the sensors with id 1 and 2.
 
 ## Code structure
 
-The sql queries that are run are definied in `WebAPI.java`.     
+The SQL queries that are run are definied in `WebAPI.java`.     
 These are called from `NoiseDataController.java` which also handles the mapping to `/data`.     
 `NoiseDataDTO.java` and `TimelessNoiseDataDTO.java` maps the database rows to JSON objects.     
 
