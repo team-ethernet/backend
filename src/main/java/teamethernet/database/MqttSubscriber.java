@@ -40,7 +40,9 @@ public class MqttSubscriber implements MqttCallback {
     public void connect(String ip, String port, String topic) {
         try {
             client = new MqttClient("tcp://" + ip + ":" + port, "dbSub" + UUID.randomUUID());
-            client.connect();
+			MqttConnectOptions connOpts = new MqttConnectOptions();
+            connOpts.setAutomaticReconnect(true);
+            client.connect(connOpts);
             client.setCallback(this);
             client.subscribe(topic);
         } catch (MqttException e) {
